@@ -1,0 +1,15 @@
+from sqlalchemy import Boolean, Column, Integer, String
+
+from app.db.database import Base
+
+
+class Product(Base):
+    __tablename__ = "products"
+
+    id = Column(Integer, primary_key=True, index=True)
+    product_name = Column(String, index=True)
+    breed = Column(String, index=True)
+    desc = Column(String)
+    quantity = Column(Integer)
+    price = Column(String, index=True)
+    is_active = Column(Boolean, default=True)
