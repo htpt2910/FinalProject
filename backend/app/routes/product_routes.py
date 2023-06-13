@@ -7,8 +7,6 @@ from app.crud import crud_product
 from app.schemas import product_schema
 from app.db.database import SessionLocal, engine
 
-product_model.Base.metadata.create_all(bind=engine)
-
 product_router = APIRouter()
 
 

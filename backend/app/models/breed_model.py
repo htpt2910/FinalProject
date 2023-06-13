@@ -1,11 +1,9 @@
 from sqlalchemy import Boolean, Column, Integer, String
 
-from app.db.database import Base
+from app.db.base_class import Base
 
 
 class Breed(Base):
-    __tablename__ = "breeds"
-
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
     desc = Column(String)
