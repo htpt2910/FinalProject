@@ -1,11 +1,18 @@
 import { WebsiteIcon } from "@/components/icon/WebsiteIcon"
+import { AccountInfo } from "@/components/session/AccountInfo"
 import { comfortaa } from "@/libs/font"
+import { useSession, signIn } from "next-auth/react"
 import React from "react"
 
 export const Navbar = () => {
-  const [navbarOpen, setNavbarOpen] = React.useState(false)
+  const { data: session } = useSession()
+
   return (
-    <nav className="flex items-center justify-between flex-wrap py-6">
+    <nav
+      className={
+        "flex items-center justify-between py-6 fixed w-full z-20 top-0 left-0 px-32 bg-orange-500"
+      }
+    >
       <div className="flex items-center flex-shrink-0 text-white">
         <WebsiteIcon />
       </div>
@@ -28,7 +35,7 @@ export const Navbar = () => {
       >
         <div className="text-lg lg:flex-grow flex justify-center">
           <a
-            href="#responsive-header"
+            href="/"
             className="block mt-4 p px-7 lg:inline-block lg:mt-0 text-gray-800 hover:text-orange-300 mr-4"
           >
             Home
@@ -46,22 +53,19 @@ export const Navbar = () => {
             Contact
           </a>
         </div>
-        <div>
-          <a
-            href="#"
-            className="inline-block text-sm px-6 py-3 leading-none  text-orange-400 hover:border-transparent hover:text-orange-500 mt-4 lg:mt-0"
-          >
-            Sign up
-          </a>
-        </div>
-        <div>
-          <a
-            href="#"
-            className="inline-block text-sm px-6 py-3 leading-none border border-orange-400 rounded-3xl text-white bg-orange-400 hover:bg-white hover:text-orange-400 mt-4 lg:mt-0"
-          >
-            Sign in
-          </a>
-        </div>
+        {session ? (
+          <AccountInfo user={session?.user} />
+        ) : (
+          <div className="flex justify-center items-center">
+            Not signed in?
+            <button
+              className="inline-block text-sm px-6 py-3 leading-none border border-orange-400 rounded-3xl text-white bg-orange-400 hover:bg-white hover:text-orange-400 mt-4 ml-2 lg:mt-0"
+              onClick={() => signIn()}
+            >
+              Sign in
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   )

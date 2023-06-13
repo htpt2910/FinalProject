@@ -21,7 +21,7 @@ services:
     image: docker.io/thanh2910/final_project:frontend
     build:
       context: ./frontend
-      target: builder
+      target: development
       dockerfile: Dockerfile
     ports:
       - 3000:3000
