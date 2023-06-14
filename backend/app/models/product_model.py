@@ -10,4 +10,5 @@ class Product(Base):
     desc = Column(String)
     quantity = Column(Integer)
     price = Column(String, index=True)
+    image_uri = Column(String)
     is_active = Column(Boolean, default=True)

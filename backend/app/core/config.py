@@ -12,15 +12,15 @@ class Settings:
     PROJECT_NAME: str = "Final Project"
     PROJECT_VERSION: str = "1.0.0"
 
-    # POSTGRES_USER: str = os.getenv("POSTGRES_USER")
-    # POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-    # POSTGRES_HOST: str = os.getenv("POSTGRES_HOST", "db")
-    # POSTGRES_PORT: str = os.getenv("POSTGRES_PORT", 5432)
-    # POSTGRES_DB: str = os.getenv("POSTGRES_DB", "postgres_db")
-    # DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
     DATABASE_URL = re.sub(
         r"^postgres://", "postgresql://", os.getenv("DATABASE_URL", "")
     )
+
+    MINIO_HOST = os.getenv("AH_S3_OBJECT_STORAGE_STACKHERO_OLIVE_HOST", "")
+    MINIO_ACCESS_KEY = os.getenv(
+        "AH_S3_OBJECT_STORAGE_STACKHERO_OLIVE_ROOT_ACCESS_KEY", ""
+    )
+    MINIO_SECRET_KEY = os.getenv("AH_S3_OBJECT_STORAGE_STACKHERO_OLIVE_ROOT_SECRET_KEY")
 
 
 settings = Settings()

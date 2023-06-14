@@ -4,7 +4,7 @@ from app.models.user_model import User
 from app.schemas import user_schema
 
 
-def get_users(db: Session, user_id: int):
+def get_user(db: Session, user_id: int):
     return db.query(User).filter(User.id == user_id).first()
 
 
@@ -47,6 +47,28 @@ def update_user(db: Session, user: user_schema.UserUpdate, user_id: int):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+def update_user_avatar(db: Session, image_uri: str, user_id: int):
+    db_user = db.get(User, user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    db_user.image_uri = image_uri
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def get_user_avatar(db: Session, user_id: int):
+    db_user = db.get(User, user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if db_user.image_uri is None:
+        raise HTTPException(status_code=404, detail="User avatar not found")
+
+    return db_user.image_uri
 
 
 def delete_user(user_id: int, db: Session):
