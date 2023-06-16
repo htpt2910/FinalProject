@@ -49,6 +49,28 @@ def update_product(db: Session, product: product_schema.ProductUpdate, product_i
     return db_product
 
 
+def update_product_image(db: Session, image_uri: str, product_id: int):
+    db_product = db.get(Product, product_id)
+    if not db_product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    db_product.image_uri = image_uri
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product)
+    return db_product
+
+
+def get_product_image(db: Session, product_id: int):
+    db_product = db.get(Product, product_id)
+    if not db_product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    if db_product.image_uri is None:
+        raise HTTPException(status_code=404, detail="Product image not found")
+
+    return db_product.image_uri
+
+
 def delete_product(product_id: int, db: Session):
     product = db.query(Product).filter(Product.id == product_id)
     product.delete()

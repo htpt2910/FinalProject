@@ -1,14 +1,14 @@
-from typing import Any, List, Union
-from uuid import uuid4 as uuid
 from datetime import timedelta
+from typing import Annotated, Any, List, Union
+from uuid import uuid4 as uuid
 
-from fastapi import Depends, FastAPI, HTTPException, APIRouter, File, UploadFile
-from sqlalchemy.orm import Session
-from app.models import user_model
 from app.crud import crud_user
-from app.schemas import user_schema
 from app.db.database import SessionLocal, engine
 from app.db.minio import get_minio
+from app.models import user_model
+from app.schemas import user_schema
+from fastapi import APIRouter, Depends, FastAPI, File, Form, HTTPException, UploadFile
+from sqlalchemy.orm import Session
 
 user_router = APIRouter()
 
@@ -25,6 +25,24 @@ def get_db():
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud_user.get_users(db, skip=skip, limit=limit)
     return users
+
+
+@user_router.get("/{user_id}")
+def get_user(user_id: int, db: Session = Depends(get_db)):
+    return crud_user.get_user(db=db, user_id=user_id)
+
+
+@user_router.post("/save_user")
+def save_uid(
+    id: str = Form(),
+    name: str = Form(),
+    email: str = Form(),
+    image_uri: str = Form(),
+    db: Session = Depends(get_db),
+):
+    print("image_uri: ", image_uri)
+    return crud_user.save_uid(id=id, name=name, email=email, image_uri=image_uri, db=db)
+    # return {"name": name}
 
 
 @user_router.post("/", response_model=user_schema.User)

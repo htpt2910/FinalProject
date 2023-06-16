@@ -6,6 +6,7 @@ class UserBase(BaseModel):
     email: str
     name: str
     phone: str
+    image_uri: str
 
 
 class UserCreate(UserBase):
@@ -17,10 +18,11 @@ class UserUpdate(UserBase):
     email: Optional[str] = None
     name: Optional[str] = None
     phone: Optional[str] = None
+    image_uri: Optional[str] = None
 
 
 class User(UserBase):
-    id: int
+    id: str
     is_active: bool
 
     class Config:

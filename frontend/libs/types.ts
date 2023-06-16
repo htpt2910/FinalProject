@@ -5,4 +5,5 @@ export type Dog = {
   desc: string
   quantity: number
   price: number
+  image_uri: string
 }

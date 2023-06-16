@@ -35,6 +35,19 @@ def create_user(db: Session, user: user_schema.UserCreate):
     return db_user
 
 
+def save_uid(id, name, email, image_uri, db: Session):
+    db_user = get_user_by_email(db, email=email)
+    if db_user:
+        return
+
+    db_user = User(id=id, email=email, name=name, image_uri=image_uri)
+
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
 def update_user(db: Session, user: user_schema.UserUpdate, user_id: int):
     db_user = db.get(User, user_id)
     if not db_user:
