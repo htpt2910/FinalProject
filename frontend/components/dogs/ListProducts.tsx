@@ -6,14 +6,11 @@ import axios from "@/libs/axios"
 import { Dog } from "@/libs/types"
 import ImageStuff from "../../assets/dog_food.webp"
 
-export const ListProducts = () => {
-  const [listDogs, setListDogs] = useState<Dog[]>([])
-
-  useEffect(() => {
-    axios.get("/products/").then((res) => {
-      setListDogs(res.data)
-    })
-  }, [])
+interface ListProductsProps {
+  products: Dog[]
+}
+export const ListProducts = (props: ListProductsProps) => {
+  // const [listDogs, setListDogs] = useState<Dog[]>(props.products)
 
   return (
     <div className="mt-32 ">
@@ -27,7 +24,7 @@ export const ListProducts = () => {
         className="flex justify-end text-orange-600 underline"
       >{`See more >`}</a>
       <div className="flex mt-20 mx-36 flex-wrap">
-        {listDogs.map((dog, idx) => {
+        {props.products.map((dog, idx) => {
           if (idx > 4) return
           return (
             <ProductCard

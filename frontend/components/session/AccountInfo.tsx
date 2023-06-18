@@ -2,7 +2,7 @@ import { DefaultSession } from "next-auth"
 import { signOut, useSession } from "next-auth/react"
 import ava from "../../assets/dog_food.webp"
 import Image from "next/image"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 export const AccountInfo = ({ user }: { user: DefaultSession["user"] }) => {
   const { data: session } = useSession()
@@ -17,8 +17,10 @@ export const AccountInfo = ({ user }: { user: DefaultSession["user"] }) => {
         <Image
           className="inline-block h-12 w-12 rounded-full ring-2 ring-white"
           onClick={handleOpenMenu}
-          src={ava}
+          src={session?.user?.image || ava}
           alt="das"
+          width={50}
+          height={50}
         />
       </div>
       {open ? (

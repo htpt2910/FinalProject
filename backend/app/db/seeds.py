@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import insert, select
 from app.db.database import SessionLocal
 from app.models.user_model import User
 from app.models.product_model import Product
@@ -13,7 +12,6 @@ def seeding(db: Session):
                 name=f"user{i}",
                 email=f"user{i}@gmail.com",
                 phone=f"012345678{i}",
-                hashed_password=f"mypassword{i}",
             )
             db.add(user)
     if len(db.query(Product).all()) == 0:

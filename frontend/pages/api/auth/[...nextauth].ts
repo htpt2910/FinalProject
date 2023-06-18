@@ -1,6 +1,8 @@
+import axios from "@/libs/axios"
 import { NextApiRequest, NextApiResponse } from "next"
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
+import FormData from "form-data"
 
 const options = {
   providers: [
@@ -10,6 +12,28 @@ const options = {
     }),
   ],
   debug: false,
+  callbacks: {
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.sub
+      }
+
+      console.log("session: ~~ ", session)
+      var formData = new FormData()
+      formData.append("name", token.name || "myname")
+      formData.append("email", token.email || "myemail")
+      formData.append("image_uri", token.picture || "myimage")
+
+      await axios
+        .post(`/users/save_user`, formData)
+        // .then((res) => console.log("res: ", res))
+        .catch((err) => console.log("error~: ", err.response.data))
+      return session
+    },
+  },
+  session: {
+    strategy: "jwt",
+  },
 }
 
 export default NextAuth(options)

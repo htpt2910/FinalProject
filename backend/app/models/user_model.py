@@ -1,14 +1,13 @@
 from sqlalchemy import Boolean, Column, Integer, String
 
-from app.db.database import Base
+from app.db.base_class import Base
 
 
 class User(Base):
-    __tablename__ = "users"
-
     id = Column(Integer, primary_key=True, index=True)
+    role = Column(Integer)
     email = Column(String, unique=True, index=True)
     name = Column(String)
-    phone = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    phone = Column(String, unique=True)
+    image_uri = Column(String)
     is_active = Column(Boolean, default=True)

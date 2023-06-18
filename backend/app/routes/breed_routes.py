@@ -7,8 +7,6 @@ from app.crud import crud_breed
 from app.schemas import breed_schema
 from app.db.database import SessionLocal, engine
 
-breed_model.Base.metadata.create_all(bind=engine)
-
 breed_router = APIRouter()
 
 
