@@ -15,6 +15,7 @@ export const Navbar = () => {
     >
       <div className="flex items-center flex-shrink-0 text-white">
         <WebsiteIcon />
+        {session?.user?.email}
       </div>
       <div className="block lg:hidden">
         <button className="flex items-center px-3 py-2 border rounded text-orange-300 hover:text-white hover:border-white">

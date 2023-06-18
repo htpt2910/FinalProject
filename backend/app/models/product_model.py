@@ -9,6 +9,6 @@ class Product(Base):
     breed = Column(String, index=True)
     desc = Column(String)
     quantity = Column(Integer)
-    price = Column(String, index=True)
+    price = Column(String)
     image_uri = Column(String)
     is_active = Column(Boolean, default=True)

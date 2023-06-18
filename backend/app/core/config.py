@@ -16,11 +16,10 @@ class Settings:
         r"^postgres://", "postgresql://", os.getenv("DATABASE_URL", "")
     )
 
-    MINIO_HOST = os.getenv("AH_S3_OBJECT_STORAGE_STACKHERO_OLIVE_HOST", "")
-    MINIO_ACCESS_KEY = os.getenv(
-        "AH_S3_OBJECT_STORAGE_STACKHERO_OLIVE_ROOT_ACCESS_KEY", ""
-    )
-    MINIO_SECRET_KEY = os.getenv("AH_S3_OBJECT_STORAGE_STACKHERO_OLIVE_ROOT_SECRET_KEY")
+    MINIO_HOST = os.getenv("S3_HOST", "")
+    MINIO_ACCESS_KEY = os.getenv("S3_ACCESS_KEY", "")
+    MINIO_SECRET_KEY = os.getenv("S3_SECRET_KEY")
+    MINIO_BUCKET = os.getenv("S3_BUCKET")
 
 
 settings = Settings()

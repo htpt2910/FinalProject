@@ -2,19 +2,17 @@ import { Navbar } from "@/layouts/Navbar"
 import type { AppProps } from "next/app"
 import "@/styles/globals.css"
 import { Footbar } from "@/layouts/Footbar"
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider, useSession } from "next-auth/react"
+import { Layouts } from "@/layouts/Layouts"
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+  console.log("session~ * ~ ", session)
   return (
-    <div className="bg-orange-50 px-32 w-full">
-      <SessionProvider session={session}>
-        <Navbar />
-        <Component {...pageProps} />
-        <Footbar />
-      </SessionProvider>
-    </div>
+    <SessionProvider session={session}>
+      <Layouts pageProps={pageProps} Component={Component} />
+    </SessionProvider>
   )
 }

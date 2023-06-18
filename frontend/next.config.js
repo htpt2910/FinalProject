@@ -17,6 +17,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "s3.filebase.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 }

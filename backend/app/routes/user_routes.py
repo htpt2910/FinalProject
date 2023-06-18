@@ -9,6 +9,7 @@ from app.models import user_model
 from app.schemas import user_schema
 from fastapi import APIRouter, Depends, FastAPI, File, Form, HTTPException, UploadFile
 from sqlalchemy.orm import Session
+from app.core.config import settings
 
 user_router = APIRouter()
 
@@ -34,14 +35,13 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
 
 @user_router.post("/save_user")
 def save_uid(
-    id: str = Form(),
     name: str = Form(),
     email: str = Form(),
     image_uri: str = Form(),
     db: Session = Depends(get_db),
 ):
     print("image_uri: ", image_uri)
-    return crud_user.save_uid(id=id, name=name, email=email, image_uri=image_uri, db=db)
+    return crud_user.save_uid(name=name, email=email, image_uri=image_uri, db=db)
     # return {"name": name}
 
 
@@ -73,8 +73,14 @@ def update_user_avatar(
     else:
         minio_client = get_minio()
         new_id = uuid().hex
-        minio_client.fput_object("images", new_id, file.file.fileno())
-        crud_user.update_user_avatar(db, new_id, user_id)
+        minio_client.fput_object(settings.MINIO_BUCKET, new_id, file.file.fileno())
+        crud_user.update_user_avatar(
+            db,
+            minio_client.get_presigned_url(
+                "GET", settings.MINIO_BUCKET, new_id, timedelta(days=1)
+            ),
+            user_id,
+        )
         return {"filename": new_id}
 
 
@@ -87,6 +93,6 @@ def get_user_avatar(
     image_uri = crud_user.get_user_avatar(db=db, user_id=user_id)
     return {
         "url": minio_client.get_presigned_url(
-            "GET", "images", image_uri, timedelta(days=1)
+            "GET", settings.MINIO_BUCKET, image_uri, timedelta(days=1)
         )
     }
