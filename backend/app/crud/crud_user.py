@@ -1,0 +1,56 @@
+from sqlalchemy.orm import Session
+from fastapi import HTTPException
+from app.models.user_model import User
+from app.schemas import user_schema
+
+
+def get_users(db: Session, user_id: int):
+    return db.query(User).filter(User.id == user_id).first()
+
+
+def get_user_by_email(db: Session, email: str):
+    return db.query(User).filter(User.email == email).first()
+
+
+# skip and limit for paging
+def get_users(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(User).offset(skip).limit(limit).all()
+
+
+def create_user(db: Session, user: user_schema.UserCreate):
+    db_user = get_user_by_email(db, email=user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    fake_hashed_password = user.password + "notreallyhashed"
+    db_user = User(
+        email=user.email,
+        name=user.name,
+        phone=user.phone,
+        hashed_password=fake_hashed_password,
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def update_user(db: Session, user: user_schema.UserUpdate, user_id: int):
+    db_user = db.get(User, user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    user_data = user.dict(exclude_unset=True)
+    for key, value in user_data.items():
+        setattr(db_user, key, value)
+
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def delete_user(user_id: int, db: Session):
+    user = db.query(User).filter(User.id == user_id)
+    user.delete()
+    db.commit()
+    return {"message": "Successfully delete user {user.name}"}

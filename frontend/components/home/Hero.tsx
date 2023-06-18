@@ -9,7 +9,7 @@ export const Hero = () => {
       <div>
         <div className={comfortaa.className}>
           <p className="text-5xl w-9/12 text-gray-700 leading-snug">
-            Let's get yourself a lifetime friend.
+            {"Let's get yourself a lifetime friend."}
           </p>
           <p className="text-lg w-10/12 mt-5">
             Get a friend and give him her best service with special packages.
