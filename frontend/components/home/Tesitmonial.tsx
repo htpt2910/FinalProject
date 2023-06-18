@@ -1,5 +1,5 @@
 import { comfortaa } from "@/libs/font"
-import img from "../../assets/hero.png"
+import img from "../../assets/dog_food.webp"
 import img2 from "../../assets/pawprint_white.png"
 import { CarouselItem } from "../carousel/CarouselItem"
 import { SliderIndicator } from "../carousel/Slider"
@@ -15,10 +15,10 @@ export const Testimonial = () => {
       </p>
       <div
         id="default-carousel"
-        className="relative w-full mt-24 bg-white"
+        className="relative w-full mt-24 bg-teal-500"
         data-carousel="slide"
       >
-        <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+        <div className="relative overflow-hidden rounded-lg md:h-96">
           <CarouselItem img={img} />
           <CarouselItem img={img2} />
         </div>

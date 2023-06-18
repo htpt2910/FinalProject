@@ -4,6 +4,7 @@ import { ProductCard } from "../products/ProductCard"
 import { useEffect, useState } from "react"
 import axios from "@/libs/axios"
 import { Dog } from "@/libs/types"
+import ImageStuff from "../../assets/dog_food.webp"
 
 export const ListProducts = () => {
   const [listDogs, setListDogs] = useState<Dog[]>([])
@@ -19,10 +20,15 @@ export const ListProducts = () => {
       <p
         className={"text-5xl text-gray-700 text-center " + comfortaa.className}
       >
-        {`Let's find yourself "the one"`}
+        {`Some members of our family`}
       </p>
-      <div className="flex mt-20">
+      <a
+        href="#"
+        className="flex justify-end text-orange-600 underline"
+      >{`See more >`}</a>
+      <div className="flex mt-20 mx-36 flex-wrap">
         {listDogs.map((dog, idx) => {
+          if (idx > 4) return
           return (
             <ProductCard
               key={dog.id}
@@ -31,6 +37,7 @@ export const ListProducts = () => {
               breed={dog.breed}
               desc={dog.desc}
               price={dog.price}
+              image={ImageStuff}
             />
           )
         })}

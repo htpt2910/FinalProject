@@ -4,5 +4,5 @@ export type Dog = {
   breed: string
   desc: string
   quantity: number
-  price: string
+  price: number
 }

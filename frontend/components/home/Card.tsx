@@ -1,14 +1,17 @@
+import Image from "next/image"
 interface CardProps {
   name: string
   desc: string
   bg_color: string
+  img: any
 }
 
 export const Card = (props: CardProps) => {
   return (
     <div
       className={
-        "w-8/12  p-6 border border-gray-200 rounded-lg shadow " + props.bg_color
+        "w-8/12  p-6 border border-gray-200 rounded-lg shadow h-120 block mx-auto " +
+        props.bg_color
       }
     >
       <a href="#">
@@ -16,6 +19,7 @@ export const Card = (props: CardProps) => {
           {props.name}
         </h5>
       </a>
+      <Image src={props.img} alt="img" height={300} />
       <p className="mb-3 font-normal text-gray-900 ">{props.desc}</p>
       <a
         href="#"
