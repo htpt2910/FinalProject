@@ -1,15 +1,24 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from fastapi import HTTPException
 from app.models.product_model import Product
 from app.schemas import product_schema
 
 
 def get_product(db: Session, product_id: int):
-    return db.query(Product).filter(Product.id == product_id).first()
+    return (
+        db.query(Product)
+        .options(joinedload(Product.breed))
+        .filter(Product.id == product_id)
+        .first()
+    )
 
 
 def get_product_by_product_name(db: Session, product_name: str):
     return db.query(Product).filter(Product.product_name == product_name).first()
+
+
+def get_product_by_breed_id(db: Session, breed_id: int):
+    return db.query(Product).filter(Product.breed_id == breed_id).all()
 
 
 # skip and limit for paging

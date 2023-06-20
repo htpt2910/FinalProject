@@ -3,6 +3,7 @@ import { Card } from "./Card"
 import PetShop from "../../assets/pet_shop_img.jpeg"
 import DogFood from "../../assets/pet_food.jpeg"
 import TakeCareDog from "../../assets/take_care.jpeg"
+import Link from "next/link"
 
 export const Services = () => {
   return (

@@ -72,16 +72,14 @@ def update_user_avatar(
         return
     else:
         minio_client = get_minio()
-        new_id = uuid().hex
-        minio_client.fput_object(settings.MINIO_BUCKET, new_id, file.file.fileno())
+        image_id = uuid().hex
+        minio_client.fput_object(settings.MINIO_BUCKET, image_id, file.file.fileno())
         crud_user.update_user_avatar(
             db,
-            minio_client.get_presigned_url(
-                "GET", settings.MINIO_BUCKET, new_id, timedelta(days=1)
-            ),
+            image_id,
             user_id,
         )
-        return {"filename": new_id}
+        return {"filename": image_id}
 
 
 @user_router.get("/{user_id}/avatar")

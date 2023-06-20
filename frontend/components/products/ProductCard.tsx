@@ -18,13 +18,21 @@ export const ProductCard = (props: ProductCardProps) => {
           pathname: `/products/${props.id}`,
         }}
       >
-        <Image src={props.image} alt="alt" className="rounded-t-lg w-full " />
+        {props.image && (
+          <Image
+            src={props.image}
+            alt="alt"
+            className="rounded-t-lg w-full "
+            width={200}
+            height={200}
+          />
+        )}
         <div className="p-5">
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
             {props.product_name} - {props.breed}
           </h5>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            {props.desc}
+            {props.desc.substring(0, 100)}
           </p>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
             {props.price}

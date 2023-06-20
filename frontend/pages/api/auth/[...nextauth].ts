@@ -13,12 +13,11 @@ const options = {
   ],
   debug: false,
   callbacks: {
-    session: async ({ session, token }) => {
+    session: async ({ session, token }: any) => {
       if (session?.user) {
         session.user.id = token.sub
       }
 
-      console.log("session: ~~ ", session)
       var formData = new FormData()
       formData.append("name", token.name || "myname")
       formData.append("email", token.email || "myemail")
@@ -26,14 +25,13 @@ const options = {
 
       await axios
         .post(`/users/save_user`, formData)
-        // .then((res) => console.log("res: ", res))
         .catch((err) => console.log("error~: ", err.response.data))
       return session
     },
   },
-  session: {
-    strategy: "jwt",
-  },
+  // session: {
+  //   strategy: "jwt",
+  // },
 }
 
 export default NextAuth(options)
