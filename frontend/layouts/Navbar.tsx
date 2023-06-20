@@ -15,7 +15,6 @@ export const Navbar = () => {
     >
       <div className="flex items-center flex-shrink-0 text-white">
         <WebsiteIcon />
-        {session?.user?.email}
       </div>
       <div className="block lg:hidden">
         <button className="flex items-center px-3 py-2 border rounded text-orange-300 hover:text-white hover:border-white">
@@ -42,10 +41,10 @@ export const Navbar = () => {
             Home
           </a>
           <a
-            href="#responsive-header"
+            href="/detect"
             className="block mt-4 px-7 lg:inline-block lg:mt-0 text-gray-800 hover:text-orange-300 mr-4"
           >
-            Services
+            AI
           </a>
           <a
             href="#responsive-header"

@@ -1,30 +1,19 @@
 from sqlalchemy.orm import Session
 from app.db.database import SessionLocal
-from app.models.user_model import User
+from app.models.breed_model import Breed
 from app.models.product_model import Product
 import time
+from app.ai.breed_classify import class_names
 
 
 def seeding(db: Session):
-    if len(db.query(User).all()) == 0:
-        for i in range(10):
-            user = User(
-                name=f"user{i}",
-                email=f"user{i}@gmail.com",
-                phone=f"012345678{i}",
-            )
-            db.add(user)
-    if len(db.query(Product).all()) == 0:
-        for j in range(10):
-            product = Product(
-                product_name=f"product{j}",
-                breed=f"breed{j}",
-                desc=f"desc{j}",
-                quantity=f"{j}",
-                price=f"{j}00$",
-            )
-            db.add(product)
+    for breed_name in class_names:
+        breed = Breed(
+            name=breed_name,
+            desc="Chihuahua is a breed of toy dog that originated in Mexico. They are named after the state of Chihuahua in northern Mexico. Chihuahuas are small dogs, typically weighing between 2 and 6 pounds, and standing between 6 and 10 inches tall at the shoulder. They have short, smooth coats that can come in a variety of colors, including fawn, black, white, and tan.",
+        )
 
+        db.add(breed)
     db.commit()
 
 

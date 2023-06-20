@@ -3,6 +3,7 @@ import { signOut, useSession } from "next-auth/react"
 import ava from "../../assets/dog_food.webp"
 import Image from "next/image"
 import { useCallback, useState } from "react"
+import Link from "next/link"
 
 export const AccountInfo = ({ user }: { user: DefaultSession["user"] }) => {
   const { data: session } = useSession()
@@ -84,8 +85,8 @@ export const AccountInfo = ({ user }: { user: DefaultSession["user"] }) => {
               </a>
             </div>
             <div className="py-1" role="none">
-              <a
-                href="#"
+              <Link
+                href="/"
                 className="text-gray-700 block px-4 py-2 text-sm"
                 role="menuitem"
                 tabIndex={-1}
@@ -101,7 +102,7 @@ export const AccountInfo = ({ user }: { user: DefaultSession["user"] }) => {
                 ) : (
                   <></>
                 )}
-              </a>
+              </Link>
             </div>
           </div>
         </>

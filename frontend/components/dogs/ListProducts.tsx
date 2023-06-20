@@ -1,5 +1,4 @@
 import { comfortaa } from "@/libs/font"
-import { dogs } from "@/data/Dogs"
 import { ProductCard } from "../products/ProductCard"
 import { useEffect, useState } from "react"
 import axios from "@/libs/axios"
@@ -25,16 +24,16 @@ export const ListProducts = (props: ListProductsProps) => {
       >{`See more >`}</a>
       <div className="flex mt-20 mx-36 flex-wrap">
         {props.products.map((dog, idx) => {
-          if (idx > 4) return
+          if (dog.id > 5) return
           return (
             <ProductCard
               key={dog.id}
               id={dog.id}
               product_name={dog.product_name}
-              breed={dog.breed}
+              breed={dog.breed.name}
               desc={dog.desc}
               price={dog.price}
-              image={ImageStuff}
+              image={dog.image_uri}
             />
           )
         })}

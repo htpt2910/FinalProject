@@ -1,4 +1,5 @@
-from typing import Optional
+from typing import Optional, List
+from app.schemas.product_schema import Product
 from pydantic import BaseModel
 
 

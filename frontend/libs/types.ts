@@ -1,7 +1,9 @@
+import { StringDecoder } from "string_decoder"
+
 export type Dog = {
   id: number
   product_name: string
-  breed: string
+  breed: Breed
   desc: string
   quantity: number
   price: number
@@ -15,4 +17,10 @@ export type User = {
   email: string
   phone: string
   image_uri: string
+}
+
+export type Breed = {
+  id: number
+  name: string
+  desc: string
 }

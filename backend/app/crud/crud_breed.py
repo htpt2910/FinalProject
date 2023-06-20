@@ -8,8 +8,12 @@ def get_breeds(db: Session, breed_id: int):
     return db.query(Breed).filter(Breed.id == breed_id).first()
 
 
-def get_breed_by_name(db: Session, name: str):
-    return db.query(Breed).filter(Breed.name == name).first()
+def get_breed_by_name(db: Session, breed_name: str):
+    return db.query(Breed).filter(Breed.name == breed_name).first()
+
+
+def get_all_by_breed_name(db: Session, breed_name: str):
+    return db.query(Breed).filter(Breed.name == breed_name).all()
 
 
 # skip and limit for paging

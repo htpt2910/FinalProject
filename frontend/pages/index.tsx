@@ -10,8 +10,17 @@ export const getServerSideProps: GetServerSideProps<{
   products: Dog[]
 }> = async () => {
   const { data: products } = await axios.get("/products")
-
-  return { props: { products } }
+  const updatedProducts = await Promise.all<Dog>(
+    products.map(async (product: Dog, index: number) => {
+      const { data } = await axios.get(`/products/${product.id}/image`)
+      const image_uri = data.url
+      return {
+        ...product,
+        image_uri,
+      }
+    })
+  )
+  return { props: { products: updatedProducts } }
 }
 
 export default function Home({

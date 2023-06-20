@@ -36,6 +36,11 @@ def create_product(
     return crud_product.create_product(db=db, product=product)
 
 
+@product_router.get("/by_breed/{breed_id}")
+def get_products(breed_id: int, db: Session = Depends(get_db)):
+    return crud_product.get_product_by_breed_id(db=db, breed_id=breed_id)
+
+
 @product_router.get("/{product_id}", response_model=product_schema.Product)
 def get_product(product_id: int, db: Session = Depends(get_db)):
     return crud_product.get_product(db, product_id=product_id)
@@ -50,7 +55,7 @@ def update_product(
     return crud_product.update_product(db=db, product=product, product_id=product_id)
 
 
-@product_router.delete("/{product_id}", response_model=product_schema.Product)
+@product_router.delete("/{product_id}")
 def delete_product(product_id: int, db: Session = Depends(get_db)):
     return crud_product.delete_product(product_id=product_id, db=db)
 
@@ -65,16 +70,10 @@ def update_product_image(
         return
     else:
         minio_client = get_minio()
-        new_id = uuid().hex
-        minio_client.fput_object(settings.MINIO_BUCKET, new_id, file.file.fileno())
-        crud_product.update_product_image(
-            db,
-            minio_client.get_presigned_url(
-                "GET", settings.MINIO_BUCKET, new_id, timedelta(days=1)
-            ),
-            product_id,
-        )
-        return {"filename": new_id}
+        image_id = uuid().hex
+        minio_client.fput_object(settings.MINIO_BUCKET, image_id, file.file.fileno())
+        crud_product.update_product_image(db, image_id, product_id)
+        return {"filename": image_id}
 
 
 @product_router.get("/{product_id}/image")

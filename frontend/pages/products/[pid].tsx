@@ -1,12 +1,8 @@
-import Image from "next/image"
-import dogImage from "../../assets/hero.png"
-import { dogs } from "@/data/Dogs"
-import { comfortaa, montserrat, ubuntu } from "@/libs/font"
-import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
 import axios from "@/libs/axios"
+import { comfortaa, montserrat, ubuntu } from "@/libs/font"
 import { Dog } from "@/libs/types"
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next"
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next"
+import Image from "next/image"
 
 export const getServerSideProps: GetServerSideProps<{
   product: Dog
@@ -28,7 +24,7 @@ const ProductDetail = ({
       <div>
         <Image
           src={image_uri}
-          alt="alt"
+          alt="alt1"
           width={500}
           height={500}
           className="mx-auto"
@@ -41,7 +37,7 @@ const ProductDetail = ({
           <p className="my-5 ">
             Breed:
             <span className={"font-bold ml-10  " + comfortaa.className}>
-              {product?.breed}
+              {product?.breed.name}
             </span>
           </p>
           <p className="my-5 ">
@@ -57,7 +53,7 @@ const ProductDetail = ({
                 "font-bold text-3xl text-red-600 ml-20 " + comfortaa.className
               }
             >
-              {product?.price} VND
+              {product?.price} $
             </span>
           </div>
           <p className="my-5 ">

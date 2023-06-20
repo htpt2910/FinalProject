@@ -9,7 +9,6 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
-  console.log("session~ * ~ ", session)
   return (
     <SessionProvider session={session}>
       <Layouts pageProps={pageProps} Component={Component} />
