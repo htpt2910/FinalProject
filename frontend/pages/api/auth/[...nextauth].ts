@@ -29,9 +29,6 @@ const options = {
       return session
     },
   },
-  // session: {
-  //   strategy: "jwt",
-  // },
 }
 
 export default NextAuth(options)

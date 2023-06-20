@@ -1,11 +1,28 @@
 import { WebsiteIcon } from "@/components/icon/WebsiteIcon"
 import { AccountInfo } from "@/components/session/AccountInfo"
+import axios from "@/libs/axios"
 import { comfortaa } from "@/libs/font"
 import { useSession, signIn } from "next-auth/react"
-import React from "react"
+import Link from "next/link"
+import React, { useEffect, useState } from "react"
 
 export const Navbar = () => {
   const { data: session } = useSession()
+  const [userId, setUserId] = useState<number>()
+  const [avatar, setUserAvatar] = useState<string>()
+
+  useEffect(() => {
+    async function getUserInfo() {
+      const userInfo = await axios.get(`/users/${session?.user?.email}/info`)
+      setUserId(userInfo?.data.id)
+      const { data: image_uri } = await axios.get(
+        `/users/${userInfo?.data.id}/avatar`
+      )
+      setUserAvatar(image_uri.url)
+    }
+
+    if (session) getUserInfo()
+  }, [session])
 
   return (
     <nav
@@ -54,7 +71,7 @@ export const Navbar = () => {
           </a>
         </div>
         {session ? (
-          <AccountInfo user={session?.user} />
+          <AccountInfo user={session?.user} id={userId} avatar={avatar} />
         ) : (
           <div className="flex justify-center items-center">
             Not signed in?

@@ -6,6 +6,7 @@ class UserBase(BaseModel):
     email: Optional[str] = None
     name: Optional[str] = None
     phone: Optional[str] = None
+    address: Optional[str] = None
     image_uri: Optional[str] = None
 
 

@@ -16,6 +16,7 @@ export type User = {
   name: string
   email: string
   phone: string
+  address: string
   image_uri: string
 }
 
@@ -23,4 +24,11 @@ export type Breed = {
   id: number
   name: string
   desc: string
+}
+
+export type Order = {
+  id: number
+  type: string
+  ordered_day: Date
+  finished_day: Date
 }
