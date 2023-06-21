@@ -10,7 +10,9 @@ class Order(Base):
     type = Column(String)
     ordered_day = Column(DateTime(timezone=True), server_default=func.now())
     finished_day = Column(DateTime(timezone=True))
+    total_price = Column(Integer)
     is_active = Column(Boolean, default=True)
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="orders")
+    products = relationship("Product", back_populates="order")

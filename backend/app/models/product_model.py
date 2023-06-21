@@ -8,10 +8,11 @@ class Product(Base):
     id = Column(Integer, primary_key=True, index=True)
     product_name = Column(String, index=True)
     desc = Column(String)
-    quantity = Column(Integer)
-    price = Column(String)
+    price = Column(Integer)
     image_uri = Column(String)
     is_active = Column(Boolean, default=True)
     breed_id = Column(Integer, ForeignKey("breeds.id"))
+    order_id = Column(Integer, ForeignKey("orders.id"))
 
     breed = relationship("Breed", back_populates="products")
+    order = relationship("Order", back_populates="products")

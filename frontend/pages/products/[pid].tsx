@@ -56,12 +56,6 @@ const ProductDetail = ({
               {product?.price} $
             </span>
           </div>
-          <p className="my-5 ">
-            Quantity:{" "}
-            <span className={"font-bold ml-10  " + comfortaa.className}>
-              {product?.quantity}
-            </span>{" "}
-          </p>
         </div>
       </div>
     </div>

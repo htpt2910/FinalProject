@@ -67,7 +67,7 @@ export default function ProductTable({ color, products }: CardTableProps) {
                       : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                   }
                 >
-                  Quantity
+                  something
                 </th>
                 <th
                   className={

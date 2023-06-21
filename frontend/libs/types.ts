@@ -5,7 +5,6 @@ export type Dog = {
   product_name: string
   breed: Breed
   desc: string
-  quantity: number
   price: number
   image_uri: string
 }
@@ -31,4 +30,6 @@ export type Order = {
   type: string
   ordered_day: Date
   finished_day: Date
+  total_price: number
+  products: Dog[]
 }

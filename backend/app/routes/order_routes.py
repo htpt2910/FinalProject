@@ -18,19 +18,19 @@ def get_db():
         db.close()
 
 
-@order_router.get("/", response_model=List[order_schema.Order])
+@order_router.get("/")
 def read_orders(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     orders = crud_order.get_orders(db, skip=skip, limit=limit)
     return orders
 
 
-# @order_router.get("/{order_typ}")
-# def get_order(order_name: str, db: Session = Depends(get_db)):
-#     return crud_order.get_order_by_name(db, order_name=order_name)
+@order_router.get("/{order_id}")
+def get_order(order_id: int, db: Session = Depends(get_db)):
+    return crud_order.get_order(db, order_id=order_id)
 
 
-@order_router.get("/{user_id}")
-def get_order(user_id: str, db: Session = Depends(get_db)):
+@order_router.get("/{user_id}/all")
+def get_order_by_user_id(user_id: str, db: Session = Depends(get_db)):
     return crud_order.get_orders_by_user_id(db, user_id=user_id)
 
 
@@ -41,9 +41,15 @@ def create_order(order: order_schema.OrderCreate, db: Session = Depends(get_db))
 
 @order_router.patch("/{order_id}", response_model=order_schema.Order)
 def update_order(
-    order_id: int, order: order_schema.OrderUpdate, db: Session = Depends(get_db)
+    order_id: int,
+    order: order_schema.OrderUpdate,
+    db: Session = Depends(get_db),
 ):
-    return crud_order.update_order(db=db, order=order, order_id=order_id)
+    return crud_order.update_order(
+        db=db,
+        order=order,
+        order_id=order_id,
+    )
 
 
 @order_router.delete("/{order_id}", response_model=order_schema.Order)
