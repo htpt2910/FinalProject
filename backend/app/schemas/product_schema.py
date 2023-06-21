@@ -9,9 +9,9 @@ class ProductBase(BaseModel):
     product_name: Optional[str] = None
     breed_id: Optional[int] = None
     desc: Optional[str] = None
-    quantity: Optional[str] = None
-    price: Optional[str] = None
+    price: Optional[int] = None
     image_uri: Optional[str] = None
+    order_id: Optional[int] = None
 
 
 class ProductCreate(ProductBase):

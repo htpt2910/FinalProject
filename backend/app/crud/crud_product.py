@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session, joinedload
+from app.models.order_model import Order
 from fastapi import HTTPException
 from app.models.product_model import Product
 from app.schemas import product_schema
@@ -11,6 +12,14 @@ def get_product(db: Session, product_id: int):
         .filter(Product.id == product_id)
         .first()
     )
+
+
+def get_products_by_order_id(db: Session, order_id: int):
+    return (
+        db.query(Product)
+        .options(joinedload(Order.products))
+        .filter(Product.order_id == order_id)
+    ).all()
 
 
 def get_product_by_product_name(db: Session, product_name: str):
@@ -35,7 +44,6 @@ def create_product(db: Session, product: product_schema.ProductCreate):
         product_name=product.product_name,
         breed=product.breed,
         desc=product.desc,
-        quantity=product.quantity,
         price=product.price,
     )
     db.add(db_product)

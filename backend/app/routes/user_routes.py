@@ -33,6 +33,11 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
     return crud_user.get_user(db=db, user_id=user_id)
 
 
+@user_router.get("/{user_email}/info")
+def get_user(user_email: str, db: Session = Depends(get_db)):
+    return crud_user.get_user_by_email(db=db, email=user_email)
+
+
 @user_router.post("/save_user")
 def save_uid(
     name: str = Form(),

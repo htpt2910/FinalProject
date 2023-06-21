@@ -5,6 +5,8 @@ import { Testimonial } from "@/components/home/Tesitmonial"
 import axios from "@/libs/axios"
 import { Dog } from "@/libs/types"
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next"
+import { useSession } from "next-auth/react"
+import { useContext } from "react"
 
 export const getServerSideProps: GetServerSideProps<{
   products: Dog[]
@@ -20,6 +22,7 @@ export const getServerSideProps: GetServerSideProps<{
       }
     })
   )
+
   return { props: { products: updatedProducts } }
 }
 

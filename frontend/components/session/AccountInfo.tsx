@@ -5,7 +5,12 @@ import Image from "next/image"
 import { useCallback, useState } from "react"
 import Link from "next/link"
 
-export const AccountInfo = ({ user }: { user: DefaultSession["user"] }) => {
+interface AccountInfoProps {
+  user: DefaultSession["user"]
+  id: number | undefined
+  avatar: string | undefined
+}
+export const AccountInfo = ({ user, id, avatar }: AccountInfoProps) => {
   const { data: session } = useSession()
   const [open, setOpen] = useState(false)
 
@@ -15,14 +20,16 @@ export const AccountInfo = ({ user }: { user: DefaultSession["user"] }) => {
   return (
     <div className="relative inline-block text-left">
       <div>
-        <Image
-          className="inline-block h-12 w-12 rounded-full ring-2 ring-white"
-          onClick={handleOpenMenu}
-          src={session?.user?.image || ava}
-          alt="das"
-          width={50}
-          height={50}
-        />
+        {avatar && (
+          <Image
+            className="inline-block h-12 w-12 rounded-full ring-2 ring-white"
+            onClick={handleOpenMenu}
+            src={avatar}
+            alt="das"
+            width={50}
+            height={50}
+          />
+        )}
       </div>
       {open ? (
         <>
@@ -41,28 +48,28 @@ export const AccountInfo = ({ user }: { user: DefaultSession["user"] }) => {
                 tabIndex={-1}
                 id="menu-item-0"
               >
-                Signed in as {user?.email}
+                Signed in as {user?.email?.substring(0, 30)}
               </a>
             </div>
             <div className="py-1" role="none">
-              <a
-                href="#"
+              <Link
+                href={`/users/${id}`}
                 className="text-gray-700 block px-4 py-2 text-sm"
                 role="menuitem"
                 tabIndex={-1}
                 id="menu-item-2"
               >
                 Profile
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href={`/orders/${id}`}
                 className="text-gray-700 block px-4 py-2 text-sm"
                 role="menuitem"
                 tabIndex={-1}
                 id="menu-item-3"
               >
                 Orders
-              </a>
+              </Link>
             </div>
             <div className="py-1" role="none">
               <a

@@ -8,7 +8,6 @@ export const dogs = [
     desc: "cute little french dog 1",
     age: 1,
     price: 1200000,
-    quantity: 1,
   },
   {
     dog_name: "cute dog",
@@ -17,7 +16,6 @@ export const dogs = [
     desc: "cute little french dog 2",
     age: 1,
     price: 1200000,
-    quantity: 1,
   },
   {
     dog_name: "cute dog",
@@ -26,7 +24,6 @@ export const dogs = [
     desc: "cute little french dog 3",
     age: 1,
     price: 1200000,
-    quantity: 1,
   },
   {
     dog_name: "cute dog",
@@ -35,7 +32,6 @@ export const dogs = [
     desc: "cute little french dog 4",
     age: 1,
     price: 1200000,
-    quantity: 1,
   },
   {
     dog_name: "cute dog",
@@ -44,7 +40,6 @@ export const dogs = [
     desc: "cute little french dog 1",
     age: 1,
     price: 1200000,
-    quantity: 1,
   },
   {
     dog_name: "cute dog",
@@ -53,7 +48,6 @@ export const dogs = [
     desc: "cute little french dog 2",
     age: 1,
     price: 1200000,
-    quantity: 1,
   },
   {
     dog_name: "cute dog",
@@ -62,7 +56,6 @@ export const dogs = [
     desc: "cute little french dog 3",
     age: 1,
     price: 1200000,
-    quantity: 1,
   },
   {
     dog_name: "cute dog",
@@ -71,6 +64,5 @@ export const dogs = [
     desc: "cute little french dog 4",
     age: 1,
     price: 1200000,
-    quantity: 1,
   },
 ]
