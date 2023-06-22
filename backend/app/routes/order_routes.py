@@ -52,6 +52,6 @@ def update_order(
     )
 
 
-@order_router.delete("/{order_id}", response_model=order_schema.Order)
+@order_router.delete("/{order_id}")
 def delete_order(order_id: int, db: Session = Depends(get_db)):
     return crud_order.delete_order(order_id=order_id, db=db)

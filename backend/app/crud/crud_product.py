@@ -3,6 +3,7 @@ from app.models.order_model import Order
 from fastapi import HTTPException
 from app.models.product_model import Product
 from app.schemas import product_schema
+from app.crud.crud_breed import get_breed
 
 
 def get_product(db: Session, product_id: int):
@@ -40,12 +41,15 @@ def create_product(db: Session, product: product_schema.ProductCreate):
     if db_product:
         raise HTTPException(status_code=400, detail="Product already registered")
 
+    breed = get_breed(db, product.breed_id)
+
     db_product = Product(
         product_name=product.product_name,
-        breed=product.breed,
         desc=product.desc,
         price=product.price,
     )
+
+    db_product.breed = breed
     db.add(db_product)
     db.commit()
     db.refresh(db_product)

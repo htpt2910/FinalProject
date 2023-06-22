@@ -4,6 +4,8 @@ import { montserrat, ubuntu } from "@/libs/font"
 import { Dog, Order, User } from "@/libs/types"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 
+//list orders of user
+
 export const getServerSideProps: GetServerSideProps<{
   orders: Order[]
 }> = async (context) => {
@@ -108,7 +110,7 @@ export default function ListOrders({
       </div>
 
       <div className="mt-10">
-        {orders.map((order, index) => {
+        {orders?.map((order, index) => {
           return <OrderItem key={index} order={order} />
         })}
       </div>

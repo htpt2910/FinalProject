@@ -52,6 +52,7 @@ def update_user(db: Session, user: user_schema.UserUpdate, user_id: int):
     db_user = db.get(User, user_id)
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
+
     user_data = user.dict(exclude_unset=True)
     for key, value in user_data.items():
         setattr(db_user, key, value)

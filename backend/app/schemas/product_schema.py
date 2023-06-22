@@ -12,6 +12,7 @@ class ProductBase(BaseModel):
     price: Optional[int] = None
     image_uri: Optional[str] = None
     order_id: Optional[int] = None
+    cart_id: Optional[int] = None
 
 
 class ProductCreate(ProductBase):

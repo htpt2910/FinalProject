@@ -5,19 +5,10 @@ import { ubuntu } from "@/libs/font"
 import { useEffect, useState } from "react"
 import { useSelect } from "@mui/base"
 import { Dog } from "@/libs/types"
+import convertDaySetting from "@/libs/convertDay"
 interface OrderItemProps {
   order: Order
 }
-
-const weekdays = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-]
 
 export const OrderItem = ({ order }: OrderItemProps) => {
   const [showAll, setShowAll] = useState(false)
@@ -34,25 +25,25 @@ export const OrderItem = ({ order }: OrderItemProps) => {
 
   // console.log("order not format: ", order.ordered_day)
   // const newOrderedDate = convertTZ(order.ordered_day, localTz)
-  const newOrderedDate = new Date(order.ordered_day)
-  // console.log("abc ", newOrderedDate)
-  // const newFinishedDate = convertTZ(order.finished_day, localTz)
+  // const newOrderedDate = new Date(order.ordered_day)
+  // // console.log("abc ", newOrderedDate)
+  // // const newFinishedDate = convertTZ(order.finished_day, localTz)
 
-  /// chinhr utc tu dong locale theo area
-  //TODO
-  const weekday = weekdays[newOrderedDate.getDay()]
-  const date = newOrderedDate.getUTCDate()
-  const month = newOrderedDate.getUTCMonth()
-  const year = newOrderedDate.getUTCFullYear()
-  const second = newOrderedDate.getUTCSeconds()
-  const minute = newOrderedDate.getUTCMinutes()
-  var hour = newOrderedDate.getUTCHours() + 7
-  let ampm
-  if (hour >= 12) {
-    hour = hour % 12
-    ampm = "PM"
-  } else ampm = "AM"
-  const dayInFull = `${weekday} ${date}/${month}/${year} at ${hour}:${minute}:${second} ${ampm}`
+  // /// chinhr utc tu dong locale theo area
+  // //TODO
+  // const weekday = weekdays[newOrderedDate.getDay()]
+  // const date = newOrderedDate.getUTCDate()
+  // const month = newOrderedDate.getUTCMonth()
+  // const year = newOrderedDate.getUTCFullYear()
+  // const second = newOrderedDate.getUTCSeconds()
+  // const minute = newOrderedDate.getUTCMinutes()
+  // var hour = newOrderedDate.getUTCHours() + 7
+  // let ampm
+  // if (hour >= 12) {
+  //   hour = hour % 12
+  //   ampm = "PM"
+  // } else ampm = "AM"
+  // const dayInFull = `${weekday} ${date}/${month}/${year} at ${hour}:${minute}:${second} ${ampm}`
 
   // console.log("day in full: ", dayInFull)
 
@@ -63,7 +54,9 @@ export const OrderItem = ({ order }: OrderItemProps) => {
           <tbody>
             <tr>
               <th className="text-left">
-                <p className="text-orange-500">Ordered day: {dayInFull}</p>
+                <p className="text-orange-500">
+                  Ordered day: {convertDaySetting(order.ordered_day)}
+                </p>
               </th>
               <th className="text-right">
                 {order.finished_day ? (
@@ -120,17 +113,17 @@ export const OrderItem = ({ order }: OrderItemProps) => {
                   <tr>
                     <th>
                       <Image
-                        src={order.products[0].image_uri}
+                        src={order.products[0]?.image_uri}
                         alt="alt"
                         width={100}
                         height={100}
                       />
                     </th>
                     <th className="text-left">
-                      {order.products[0].product_name}
+                      {order.products[0]?.product_name}
                     </th>
                     <th className="w-fit text-right">
-                      {order.products[0].price}
+                      {order.products[0]?.price}
                     </th>
                   </tr>
                 </tbody>
@@ -150,15 +143,10 @@ export const OrderItem = ({ order }: OrderItemProps) => {
               )}
             </>
           )}
-          {/* ggo {JSON.stringify(order.products)} */}
-
-          {/* so luong */}
         </div>
         <p className="text-end text-red-400 text-2xl">
           {order.total_price ? order.total_price : "1000$"}
         </p>
-
-        <p>{order.total_price}</p>
       </div>
     </div>
   )

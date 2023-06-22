@@ -1,11 +1,17 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from fastapi import HTTPException
 from app.models.breed_model import Breed
+from app.models.product_model import Product
 from app.schemas import breed_schema
 
 
-def get_breeds(db: Session, breed_id: int):
-    return db.query(Breed).filter(Breed.id == breed_id).first()
+def get_breed(db: Session, breed_id: int):
+    return (
+        db.query(Breed)
+        .options(joinedload(Breed.products))
+        .filter(Breed.id == breed_id)
+        .first()
+    )
 
 
 def get_breed_by_name(db: Session, breed_name: str):

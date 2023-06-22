@@ -1,9 +1,11 @@
 import Image from "next/image"
+import Link from "next/link"
 interface CardProps {
   name: string
   desc: string
   bg_color: string
   img: any
+  route: string
 }
 
 export const Card = (props: CardProps) => {
@@ -21,8 +23,8 @@ export const Card = (props: CardProps) => {
       </a>
       <Image src={props.img} alt="img" height={300} />
       <p className="mb-3 font-normal text-gray-900 ">{props.desc}</p>
-      <a
-        href="#"
+      <Link
+        href={props.route}
         className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-orange-400 bg-white rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
       >
         Show more
@@ -39,7 +41,7 @@ export const Card = (props: CardProps) => {
             clipRule="evenodd"
           ></path>
         </svg>
-      </a>
+      </Link>
     </div>
   )
 }

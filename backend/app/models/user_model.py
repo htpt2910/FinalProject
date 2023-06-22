@@ -2,6 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String
 
 from sqlalchemy.orm import relationship
 from app.db.base_class import Base
+from app.models.cart_model import Cart
 
 
 class User(Base):
@@ -15,3 +16,4 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
     orders = relationship("Order", back_populates="user")
+    cart = relationship("Cart", back_populates="user")
