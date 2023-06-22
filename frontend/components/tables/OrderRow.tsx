@@ -1,48 +1,39 @@
 import axios from "@/libs/axios"
+import convertDaySetting from "@/libs/convertDay"
 import { montserrat } from "@/libs/font"
-import { Dog } from "@/libs/types"
+import { Order } from "@/libs/types"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
 interface ProductRowProps {
-  dog: Dog
-  color: string
+  order: Order
 }
-export const ProductRow = ({ dog, color }: ProductRowProps) => {
+export const OrderRow = ({ order }: ProductRowProps) => {
   return (
     <tr className={"text-center " + montserrat.className}>
-      <th
-        className={
-          "border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left flex items-center "
-        }
-      >
+      <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-lg whitespace-nowrap p-4 text-left flex items-center">
         <Image
-          src={dog.image_uri}
+          src={order?.image_uri}
           className="h-12 w-12 bg-white rounded-full border"
           alt="..."
           width={200}
           height={200}
         />{" "}
-        <span
-          className={
-            "ml-3 font-bold " +
-            +(color === "light" ? "text-blueGray-600" : "text-white")
-          }
-        >
-          {dog.product_name}
+        <span className={"ml-3 font-bold text-blueGray-600 "}>
+          {order.user.name}
         </span>
       </th>
-      <td className="capitalize border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
-        {dog.breed.name}
+      <td className="text-center">{order?.type}</td>
+      <td className="capitalize text-center border-t-0 px-6 align-middle border-l-0 text-sm  border-r-0 whitespace-nowrap p-4">
+        {convertDaySetting(order.ordered_day)}
       </td>
-      <th className="capitalize border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
-        {dog.order_id ? "Out of stock" : "1"}
-      </th>
-      <th>{dog.price}</th>
 
-      <td className="pr-10 py-4">
-        <div className="flex justify-center gap-4">
+      <td className="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+        {order.finished_day ? convertDaySetting(order.finished_day) : "waiting"}
+      </td>
+      <td className="px-20 py-4">
+        <div className="flex justify-end gap-4">
           <Link
             x-data="{ tooltip: 'Delete' }"
             href={{

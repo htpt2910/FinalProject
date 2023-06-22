@@ -23,6 +23,7 @@ export const Services = () => {
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
             }
             bg_color="bg-orange-200"
+            route="all"
           />
         </div>
 
@@ -34,6 +35,7 @@ export const Services = () => {
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
             }
             bg_color="bg-orange-400"
+            route="#"
           />
         </div>
         <div>
@@ -44,6 +46,7 @@ export const Services = () => {
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
             }
             bg_color="bg-orange-200"
+            route="#"
           />
         </div>
       </div>

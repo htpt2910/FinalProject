@@ -33,7 +33,7 @@ export const Row = (props: RowProps) => {
           {props.email}
         </span>
       </td>
-      <td className="px-20 py-4">{props.phone}0123.456.789</td>
+      <td className="px-20 py-4">{props.phone}</td>
       <td className="px-20 py-4">
         <div className="flex justify-end gap-4">
           <Link

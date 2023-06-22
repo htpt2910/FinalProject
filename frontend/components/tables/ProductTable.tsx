@@ -37,11 +37,11 @@ export default function ProductTable({ color, products }: CardTableProps) {
         <div className="block w-full overflow-x-auto">
           {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">
-            <thead>
+            <thead className="bg-gray-100">
               <tr>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    "px-10 align-middle w-96 border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
                     (color === "light"
                       ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                       : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
@@ -51,7 +51,7 @@ export default function ProductTable({ color, products }: CardTableProps) {
                 </th>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    "px-6 align-middle w-64 text-center border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold  " +
                     (color === "light"
                       ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                       : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
@@ -61,17 +61,17 @@ export default function ProductTable({ color, products }: CardTableProps) {
                 </th>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    "px-6 align-middle w-64 text-center border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold  " +
                     (color === "light"
                       ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                       : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
                   }
                 >
-                  something
+                  Quantity
                 </th>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    "px-6 align-middle w-64 text-center border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold " +
                     (color === "light"
                       ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                       : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
@@ -79,6 +79,14 @@ export default function ProductTable({ color, products }: CardTableProps) {
                 >
                   Price
                 </th>
+                <th
+                  className={
+                    "px-6 align-middle w-64 text-center border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-blueGray-600 text-blueGray-200 border-blueGray-500")
+                  }
+                ></th>
               </tr>
             </thead>
             <tbody>
