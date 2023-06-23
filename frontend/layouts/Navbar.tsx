@@ -19,12 +19,10 @@ export const Navbar = () => {
       const { data: image_uri } = await axios.get(
         `/users/${userInfo?.data.id}/avatar`
       )
-      const { data: productsIncart } = await axios.get(
-        `/carts/cart/${userInfo.data.id}`
-      )
 
       setUserAvatar(image_uri.url)
-      setProdsInCart(productsIncart?.products.length)
+      // console.log("cart items: ", userInfo.data.cart)
+      // setProdsInCart(userInfo?.cart.length)
     }
 
     if (session) getUserInfo()
@@ -79,7 +77,7 @@ export const Navbar = () => {
         {session ? (
           <div className="flex">
             <label className="z-50 relative left-14 w-5 h-5 bg-teal-500 rounded-full text-center text-white">
-              {prodsInCart}
+              {/* {prodsInCart} */}
             </label>
 
             <Link href={`/cart/${userId}`}>

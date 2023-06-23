@@ -20,6 +20,7 @@ export type User = {
   phone: string
   address: string
   image_uri: string
+  cart: number[]
 }
 
 export type Breed = {
@@ -38,10 +39,4 @@ export type Order = {
   user_id: number
   user: User
   image_uri: string
-}
-
-export type Cart = {
-  id: number
-  user_id: number
-  products: Dog[]
 }

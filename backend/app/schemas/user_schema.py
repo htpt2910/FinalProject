@@ -1,6 +1,4 @@
 from typing import Optional, List
-from app.schemas.order_schema import Order
-from app.schemas.cart_schema import Cart
 from pydantic import BaseModel
 
 
@@ -10,6 +8,7 @@ class UserBase(BaseModel):
     phone: Optional[str] = None
     address: Optional[str] = None
     image_uri: Optional[str] = None
+    cart: Optional[List[int]] = None
 
 
 class UserCreate(UserBase):

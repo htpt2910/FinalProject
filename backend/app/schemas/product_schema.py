@@ -13,7 +13,6 @@ class ProductBase(BaseModel):
     age: Optional[str] = None
     image_uri: Optional[str] = None
     order_id: Optional[int] = None
-    cart_id: Optional[int] = None
 
 
 class ProductCreate(ProductBase):
