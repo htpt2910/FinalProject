@@ -132,6 +132,7 @@ def delete_order(order_id: int, db: Session):
     order = db.query(Order).filter(Order.id == order_id).first()
     if order is None:
         raise HTTPException(status_code=404, detail="Order not found")
+
     db.delete(order)
     db.commit()
     return {"message": "Successfully delete order"}

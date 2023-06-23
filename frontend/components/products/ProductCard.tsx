@@ -32,7 +32,7 @@ export const ProductCard = (props: ProductCardProps) => {
             {props.product_name} - {props.breed}
           </h5>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            {props.desc.substring(0, 100)}
+            {props.desc.substring(0, 50)}...
           </p>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
             {props.price}

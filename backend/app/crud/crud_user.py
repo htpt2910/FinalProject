@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from app.models.order_model import Order
 from fastapi import HTTPException
 from app.models.user_model import User
 from app.schemas import user_schema
@@ -86,7 +87,14 @@ def get_user_avatar(db: Session, user_id: int):
 
 
 def delete_user(user_id: int, db: Session):
-    user = db.query(User).filter(User.id == user_id)
-    user.delete()
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    db_order = db.query(Order).filter(Order.user_id == user_id).all()
+    for order in db_order:
+        db.delete(order)
+
+    db.delete(user)
     db.commit()
-    return {"message": "Successfully delete user {user.name}"}
+    return {"message": "Successfully delete user"}

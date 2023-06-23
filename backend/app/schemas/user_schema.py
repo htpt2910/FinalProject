@@ -1,4 +1,6 @@
-from typing import Optional
+from typing import Optional, List
+from app.schemas.order_schema import Order
+from app.schemas.cart_schema import Cart
 from pydantic import BaseModel
 
 

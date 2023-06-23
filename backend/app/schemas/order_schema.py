@@ -1,6 +1,5 @@
 from typing import List, Optional
 from app.schemas.product_schema import Product
-from app.schemas.user_schema import User
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -26,7 +25,6 @@ class Order(OrderBase):
     is_active: bool
 
     products: List[Product]
-    user: Optional[User]
 
     class Config:
         orm_mode = True

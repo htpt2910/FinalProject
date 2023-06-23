@@ -47,6 +47,7 @@ def create_product(db: Session, product: product_schema.ProductCreate):
         product_name=product.product_name,
         desc=product.desc,
         price=product.price,
+        age=product.age,
     )
 
     db_product.breed = breed

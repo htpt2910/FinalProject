@@ -35,8 +35,6 @@ def get_carts(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_cart(db: Session, cart: cart_schema.CartCreate):
-    print("hoho: ", cart.product_ids)
-
     products = []
     for product_id in cart.product_ids:
         product = get_product(db, product_id)

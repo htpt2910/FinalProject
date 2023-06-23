@@ -6,6 +6,7 @@ export type Dog = {
   product_name: string
   breed: Breed
   desc: string
+  age: string
   price: number
   image_uri: string
   order_id: number

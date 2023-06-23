@@ -24,7 +24,7 @@ export const Navbar = () => {
       )
 
       setUserAvatar(image_uri.url)
-      setProdsInCart(productsIncart?.products.length || 1)
+      setProdsInCart(productsIncart?.products.length)
     }
 
     if (session) getUserInfo()
