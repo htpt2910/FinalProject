@@ -13,7 +13,6 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (context) => {
   const uid = context.params?.uid
 
-  console.log("uid: ", uid)
   const { data: user } = await axios.get(`/users/${uid}`)
   const { data: image_uri } = await axios.get(`/users/${uid}/avatar`)
 
@@ -37,7 +36,6 @@ const ProductDetail = ({
 
   function handleChange(event: any) {
     const { name, value } = event.target
-    console.log("name, value", name, value)
 
     setUserInfo((prevValue) => {
       return {
@@ -54,9 +52,7 @@ const ProductDetail = ({
   }
 
   async function handleUploadImage(event: any) {
-    console.log("upload image: ")
     const image = event?.target.files[0]
-    console.log("image: ", image.name)
     setAvatar(image)
   }
 

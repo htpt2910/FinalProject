@@ -55,7 +55,7 @@ export const Row = (props: RowProps) => {
               if (result) {
                 deleteUser(props.id)
                 window.alert("Delete user successfully!")
-                router.reload()
+                router.push("/admin/users")
               }
             }}
           >
