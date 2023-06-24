@@ -87,7 +87,7 @@ def get_user_avatar(db: Session, user_id: int):
 def delete_user(user_id: int, db: Session):
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        return {"message: " "User not exist."}
 
     db_order = db.query(Order).filter(Order.user_id == user_id).all()
     for order in db_order:

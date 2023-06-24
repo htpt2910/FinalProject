@@ -16,18 +16,19 @@ export const Navbar = () => {
   useEffect(() => {
     async function getUserInfo() {
       const userInfo = await axios.get(`/users/${session?.user?.email}/info`)
-      setUserId(userInfo?.data.id)
       const { data: image_uri } = await axios.get(
         `/users/${userInfo?.data.id}/avatar`
       )
       setUserAvatar(image_uri.url)
-      window.localStorage.setItem("user_id", userInfo?.data.id)
-
-      setProdsInCart(userInfo?.data.products_in_cart.split(",").length)
+      console.log("userInfo: ", userInfo?.data.products_in_cart)
+      const userProductsInCart = userInfo?.data.products_in_cart
+      if (userProductsInCart) {
+        setProdsInCart(userInfo?.data.products_in_cart.split(",").length)
+      } else setProdsInCart(0)
     }
 
     if (session) getUserInfo()
-  }, [session])
+  }, [prodsInCart, session])
 
   return (
     <nav
