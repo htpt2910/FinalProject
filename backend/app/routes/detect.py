@@ -2,12 +2,11 @@ import torch
 import io
 
 from sqlalchemy.orm import Session
-
 from app.ai.breed_classify import model, class_names
 import PIL.Image
 from torchvision import transforms
 from app.crud.crud_breed import get_breed_by_name
-from fastapi import Depends, FastAPI, HTTPException, APIRouter, File, UploadFile
+from fastapi import Depends, APIRouter, UploadFile
 
 from app.db.database import SessionLocal, engine
 
@@ -37,10 +36,18 @@ def predict_breed_transfer(img: UploadFile, db: Session = Depends(get_db)):
     # load the image and return the predicted breed
     # if there is more than 1 dog, use bounding box and identify all dogs,
     img_content = img.file.read()
-    img = PIL.Image.open(io.BytesIO(img_content))
-    img = data_transform(img).float()
-    img = img.unsqueeze(0)  # Add batch size for PyTorch: [1, 3, 224, 224]
+    my_image = PIL.Image.open(io.BytesIO(img_content))
+    image = my_image.convert("RGB")
+    print(image)
+    image_transform = data_transform(image).float()
+    image_transform = image_transform.unsqueeze(0)
     model.cpu()
-    _, preds = torch.max(model(img), 1)
-    print(preds)
-    return get_breed_by_name(db, class_names[preds])
+    result = model(image_transform)
+    _, preds = torch.max(result, 1)
+
+    max_value = torch.max(result, 1).values[0].item()
+
+    if max_value < 3.5:
+        return "No result"
+    else:
+        return get_breed_by_name(db, class_names[preds])

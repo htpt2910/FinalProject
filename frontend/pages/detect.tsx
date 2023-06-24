@@ -4,9 +4,10 @@ import { comfortaa } from "@/libs/font"
 import axios from "@/libs/axios"
 import { UploadArea } from "@/components/detect/UploadArea"
 import { ViewResultArea } from "@/components/detect/ViewResultArea"
+import Link from "next/link"
 
 export default function DetectPage() {
-  const [image, setImage] = useState<Blob>()
+  const [image, setImage] = useState()
   const [breed, setBreed] = useState<string>("")
   const [breed_id, setBreed_id] = useState<number>()
   const [isLoading, setIsLoading] = useState(false)
@@ -17,6 +18,7 @@ export default function DetectPage() {
     setImage(event.target.files[0])
     // if (event.target.files && event.target.files[0]) {
     //   const i = event.target.files[0]
+    //   console.log("file: ", i)
     //   const fileName = i.name
     //   if (parseFloat((i.size / 10485760).toFixed(2)) > 0.5) {
     //     window.alert(
@@ -24,7 +26,7 @@ export default function DetectPage() {
     //         fileName +
     //         " has size bigger than 5 MB. Please choose another smaller size image!"
     //     )
-    //     setImage("")
+    //     // setImage(null)
     //     return
     //   }
 
@@ -43,7 +45,8 @@ export default function DetectPage() {
     //       " is invalid! Allowed extension are: " +
     //       validFileExtension.join(", ")
     //   )
-    //   setImage("")
+    //   setShowLink(true)
+    //   // setImage("")
     //   return
     // }
   }
@@ -56,10 +59,18 @@ export default function DetectPage() {
     const body = new FormData()
     body.set("img", image)
     const response = await axios.post(`/detect/`, body)
-    console.log(response.data)
-    setBreed(response.data.name)
-    setBreed_id(response.data.id)
-    setIsLoading(true)
+
+    if (response.data === "No result") {
+      window.alert(
+        "This breed is not in our collection. Please choose another one to detect."
+      )
+      return
+    } else {
+      setBreed(response.data.name)
+      setBreed_id(response.data.id)
+
+      setIsLoading(true)
+    }
   }
 
   useEffect(() => {
