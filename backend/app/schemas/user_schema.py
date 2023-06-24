@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 
@@ -8,6 +8,7 @@ class UserBase(BaseModel):
     phone: Optional[str] = None
     address: Optional[str] = None
     image_uri: Optional[str] = None
+    products_in_cart: Optional[str] = None
 
 
 class UserCreate(UserBase):

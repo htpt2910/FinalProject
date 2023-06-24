@@ -62,7 +62,7 @@ def update_user(
     return crud_user.update_user(db=db, user=user, user_id=user_id)
 
 
-@user_router.delete("/{user_id}", response_model=user_schema.User)
+@user_router.delete("/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     return crud_user.delete_user(user_id=user_id, db=db)
 

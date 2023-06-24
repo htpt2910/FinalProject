@@ -38,7 +38,7 @@ export default function Home({
       {/* Our family */}
       <ListProducts products={products} />
       {/* What others tell about us */}
-      <Testimonial />
+      {/* <Testimonial /> */}
     </div>
   )
 }

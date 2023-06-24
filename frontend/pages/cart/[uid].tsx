@@ -1,42 +1,52 @@
 // import { OrderItem } from "@/components/orders/OrderItem"
 import axios from "@/libs/axios"
 import { montserrat, ubuntu } from "@/libs/font"
-import { Dog, Order, User, Cart } from "@/libs/types"
+import { Dog } from "@/libs/types"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 
 export const getServerSideProps: GetServerSideProps<{
-  cart: Cart
+  listProductsInCart: Dog[]
+  user_id: number
+  productIdsInCartString: string
 }> = async (context) => {
   const uid = context.params?.uid
 
-  console.log("uid: ", uid)
-  const { data: cart } = await axios.get(`/carts/cart/${uid}`)
+  const userInfo = await axios.get(`/users/${uid}`)
+  console.log("cart: ", userInfo?.data.products_in_cart)
+  const productIdsInCartString = userInfo?.data.products_in_cart
+  const productIdsInCart = productIdsInCartString.split(",")
 
-  const products = await Promise.all<Dog>(
-    cart.products.map(async (product: Dog, index: number) => {
-      const { data: image_uri } = await axios.get(
-        `/products/${product.id}/image`
-      )
-      return { ...product, image_uri: image_uri.url }
+  console.log("productsInCart ", productIdsInCart)
+  const listProductsInCart: Dog[] = await Promise.all(
+    productIdsInCart.map(async (id: string) => {
+      const product = await axios.get(`/products/${id}`)
+      const { data: image_uri } = await axios.get(`/products/${id}/image`)
+      return { ...product.data, image_uri: image_uri.url }
     })
   )
 
-  console.log("cart: ", cart.products)
-  return { props: { cart: { ...cart, products } } }
+  return {
+    props: {
+      listProductsInCart,
+      user_id: userInfo?.data.id,
+      productIdsInCartString: productIdsInCartString,
+    },
+  }
 }
 
 export default function CartPage({
-  cart,
+  listProductsInCart,
+  user_id,
+  productIdsInCartString,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [selectedProductIds, setselectedProductIds] = useState<number[]>([])
   const [selectedProducts, setselectedProducts] = useState<Dog[]>([])
 
-  const productIdsInCart = cart.products.map((product: Dog, index: number) => {
-    return product.id
-  })
+  const productsInCart = listProductsInCart
+  const userId = user_id
   function handleselectedProductIds(
     productIndex: number,
     product: Dog,
@@ -76,44 +86,66 @@ export default function CartPage({
       <p>this is cart page</p>
       <div>
         <div className="bg-slate-50 m-5 rounded-lg p-3 text-center">
-          {cart.products?.map((product: Dog, productIndex: number) => {
-            return (
-              <table
-                className={
-                  "my-3 w-full table-fixed " +
-                  (product.order_id !== null ? " opacity-50 " : "")
-                }
-                key={productIndex}
-              >
-                <tbody>
-                  <tr>
-                    <th>
-                      <input
-                        name={`${product.id}`}
-                        type="checkbox"
-                        id={`${productIndex}`}
-                        onChange={(event) =>
-                          handleselectedProductIds(productIndex, product, event)
-                        }
-                      />
-                    </th>
-                    <th className="w-">
-                      <Image
-                        src={product.image_uri}
-                        alt="alt"
-                        width={100}
-                        height={100}
-                      />
-                    </th>
-                    <th className="text-left">{product.product_name}</th>
-                    <th className="w-fit text-right">
-                      {product.order_id ? "Out of stock" : product.price}
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-            )
-          })}
+          {productsInCart
+            ?.reverse()
+            .map((product: Dog, productIndex: number) => {
+              return (
+                <table
+                  className={
+                    "my-3 w-full table-fixed " +
+                    (product.order_id !== null ? " opacity-50 " : "")
+                  }
+                  key={productIndex}
+                >
+                  <tbody>
+                    <tr>
+                      <th>
+                        {product.order_id ? (
+                          <input
+                            name={`${product.id}`}
+                            disabled
+                            type="checkbox"
+                            id={`${productIndex}`}
+                            onChange={(event) =>
+                              handleselectedProductIds(
+                                productIndex,
+                                product,
+                                event
+                              )
+                            }
+                          />
+                        ) : (
+                          <input
+                            name={`${product.id}`}
+                            type="checkbox"
+                            id={`${productIndex}`}
+                            onChange={(event) =>
+                              handleselectedProductIds(
+                                productIndex,
+                                product,
+                                event
+                              )
+                            }
+                          />
+                        )}
+                      </th>
+                      <th className="w-">
+                        <Image
+                          src={product.image_uri}
+                          alt="alt"
+                          width={100}
+                          height={100}
+                        />
+                      </th>
+                      <th className="text-left">{product.product_name}</th>
+                      <th className="w-fit text-right">
+                        {product.order_id ? "Out of stock" : product.price}
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+              )
+            })}
         </div>
         <div className="text-end">
           <p className="text-xl">
@@ -128,10 +160,9 @@ export default function CartPage({
                 pathname: `/orders/new`,
                 query: {
                   productIds: selectedProductIds.join(","),
-                  user_id: JSON.stringify(cart.user_id),
+                  user_id: JSON.stringify(userId),
                   totalPrice: JSON.stringify(totalPrice(selectedProducts)),
-                  productsInCart: productIdsInCart.join(","),
-                  cartId: JSON.stringify(cart.id),
+                  productsInCart: productIdsInCartString,
                 },
               }}
             >

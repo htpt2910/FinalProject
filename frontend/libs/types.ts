@@ -6,6 +6,7 @@ export type Dog = {
   product_name: string
   breed: Breed
   desc: string
+  age: string
   price: number
   image_uri: string
   order_id: number
@@ -19,6 +20,7 @@ export type User = {
   phone: string
   address: string
   image_uri: string
+  products_in_cart: string
 }
 
 export type Breed = {
@@ -37,10 +39,4 @@ export type Order = {
   user_id: number
   user: User
   image_uri: string
-}
-
-export type Cart = {
-  id: number
-  user_id: number
-  products: Dog[]
 }

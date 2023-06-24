@@ -2,6 +2,7 @@ import { WebsiteIcon } from "@/components/icon/WebsiteIcon"
 import { AccountInfo } from "@/components/session/AccountInfo"
 import axios from "@/libs/axios"
 import { comfortaa } from "@/libs/font"
+import { Dog } from "@/libs/types"
 import { useSession, signIn } from "next-auth/react"
 import Link from "next/link"
 import React, { useEffect, useState } from "react"
@@ -19,16 +20,14 @@ export const Navbar = () => {
       const { data: image_uri } = await axios.get(
         `/users/${userInfo?.data.id}/avatar`
       )
-      const { data: productsIncart } = await axios.get(
-        `/carts/cart/${userInfo.data.id}`
-      )
-
       setUserAvatar(image_uri.url)
-      setProdsInCart(productsIncart?.products.length || 1)
+      window.localStorage.setItem("user_id", userInfo?.data.id)
+
+      setProdsInCart(userInfo?.data.products_in_cart.split(",").length)
     }
 
     if (session) getUserInfo()
-  }, [session, prodsInCart])
+  }, [session])
 
   return (
     <nav

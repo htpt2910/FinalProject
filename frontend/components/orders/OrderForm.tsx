@@ -2,9 +2,8 @@ import axios from "@/libs/axios"
 import { ubuntu } from "@/libs/font"
 import { Dog, User } from "@/libs/types"
 import Image from "next/image"
-import Link from "next/link"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 interface OrderFormProps {
   selectedProductIdsInInteger: number[]
@@ -13,7 +12,6 @@ interface OrderFormProps {
   productIdsInIntegerInCart: number[]
   userInfo: User | undefined
   products: Dog[]
-  cartId: number
 }
 
 export const OrderForm = ({
@@ -23,7 +21,6 @@ export const OrderForm = ({
   productIdsInIntegerInCart,
   userInfo,
   products,
-  cartId,
 }: OrderFormProps) => {
   const router = useRouter()
   console.log(userInfo)
@@ -38,7 +35,7 @@ export const OrderForm = ({
     )
 
     console.log("filtered: ", remainProductIds)
-    return remainProductIds
+    return remainProductIds.join(",")
   }
 
   const [info, setInfo] = useState({
@@ -71,13 +68,15 @@ export const OrderForm = ({
         product_ids: selectedProductIdsInInteger,
       })
       .then(async (response) => {
-        //update cart
-        const res = await axios.patch(`/carts/${cartId}`, {
-          product_ids: updateCart(
+        //update fields user cart
+        const res = await axios.patch(`/users/${user_id}`, {
+          products_in_cart: updateCart(
             selectedProductIdsInInteger,
             productIdsInIntegerInCart
           ),
         })
+
+        console.log("resss123: ", res.data)
 
         if (userInfo?.phone === null || userInfo?.address === null) {
           const updateUserInfo = await axios.patch(`/users/${user_id}`, {
@@ -87,8 +86,6 @@ export const OrderForm = ({
 
           console.log("ress: ", updateUserInfo)
         }
-
-        console.log("resssss: ", res)
       })
       .catch((e) => console.log(e))
       .finally(() => {
