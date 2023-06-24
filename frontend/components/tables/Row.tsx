@@ -1,6 +1,7 @@
 import axios from "@/libs/axios"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router"
 interface RowProps {
   id: number
   name: string
@@ -9,12 +10,14 @@ interface RowProps {
   image_uri: string
 }
 export const Row = (props: RowProps) => {
+  const router = useRouter()
   async function deleteUser(id: number) {
     console.log("id : ", id)
     const response = await axios.delete(`/users/${id}`)
     console.log("response: ", response.data)
     return
   }
+
   return (
     <tr className="hover:bg-gray-50">
       <th className="flex gap-3 pl-14 pr-24 py-4 font-normal text-gray-900">
@@ -45,7 +48,16 @@ export const Row = (props: RowProps) => {
         <div className="flex justify-end gap-4">
           <button
             x-data="{ tooltip: 'Delete' }"
-            onClick={() => deleteUser(props.id)}
+            onClick={() => {
+              const result = confirm(
+                `Are you sure you want to delete user "${props.name}"?`
+              )
+              if (result) {
+                deleteUser(props.id)
+                window.alert("Delete user successfully!")
+                router.push("/admin/users")
+              }
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

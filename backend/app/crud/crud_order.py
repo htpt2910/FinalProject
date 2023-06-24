@@ -80,18 +80,20 @@ def update_order(db: Session, order: order_schema.OrderUpdate, order_id: int):
     for key, value in order_data.items():
         setattr(db_order, key, value)
 
-    product_ids = order_data.pop("product_ids")
-    print("db order: ", product_ids)
-    products = []
-    for product_id in product_ids:
-        product = get_product(db, product_id)
-        products.append(product)
+    if order.product_ids is not None:
+        product_ids = order_data.pop("product_ids")
+        print("db order: ", product_ids)
+        products = []
+        for product_id in product_ids:
+            product = get_product(db, product_id)
+            products.append(product)
+
+        db_order.products.clear()
+        db_order.products.extend(products)
 
     # db_order.ordered_day = timezone.localize(db_order.ordered_day)
     # order_data.products.append(products)
     # # db_order.products = get_products_by_order_id(db, order_id)
-
-    print("db_order: ", db_order.products)
 
     # db_order = get_order(db, order_id=order_id)
     # db_order = Order(
@@ -102,8 +104,6 @@ def update_order(db: Session, order: order_schema.OrderUpdate, order_id: int):
     #     total_price=order.total_price,
     # )
     # print(db_order.finished_day)
-    db_order.products.clear()
-    db_order.products.extend(products)
 
     db.add(db_order)
     db.commit()

@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 class OrderBase(BaseModel):
-    user_id: int
+    user_id: Optional[int]
     type: Optional[str]
     ordered_day: Optional[datetime]
     finished_day: Optional[datetime] = None
