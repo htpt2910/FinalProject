@@ -23,12 +23,10 @@ def create_user(db: Session, user: user_schema.UserCreate):
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    fake_hashed_password = user.password + "notreallyhashed"
     db_user = User(
         email=user.email,
         name=user.name,
         phone=user.phone,
-        hashed_password=fake_hashed_password,
     )
     db.add(db_user)
     db.commit()

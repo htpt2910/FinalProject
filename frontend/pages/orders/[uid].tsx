@@ -110,7 +110,7 @@ export default function ListOrders({
       </div>
 
       <div className="mt-10">
-        {orders?.map((order, index) => {
+        {orders?.reverse().map((order, index) => {
           return <OrderItem key={index} order={order} />
         })}
       </div>

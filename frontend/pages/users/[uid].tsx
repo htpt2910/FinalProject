@@ -51,6 +51,7 @@ const ProductDetail = ({
   async function updateData(e: any) {
     e.preventDefault()
     const response = await axios.patch(`/users/${userInfo.id}`, userInfo)
+    window.alert("Profile updated successfully!")
     console.log("response ", response)
   }
   return (

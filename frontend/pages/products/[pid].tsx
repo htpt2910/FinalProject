@@ -1,28 +1,74 @@
 import axios from "@/libs/axios"
 import { comfortaa, montserrat, ubuntu } from "@/libs/font"
-import { Dog } from "@/libs/types"
+import { Dog, User } from "@/libs/types"
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { signIn, useSession } from "next-auth/react"
 import Image from "next/image"
+import Link from "next/link"
 import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import { getServerSession } from "next-auth/next"
+import { options } from "../api/auth/[...nextauth]"
 
 export const getServerSideProps: GetServerSideProps<{
   product: Dog
   image_uri: string
+  user: User
 }> = async (context) => {
+  const session = await getServerSession(context.req, context.res, options)
+  console.log("session: ", session)
+
   const pid = context.params?.pid
+
   const { data: product } = await axios.get(`/products/${pid}`)
   const { data: image_uri } = await axios.get(`/products/${pid}/image`)
+  const { data: user } = await axios.get(`/users/${session?.user?.email}/info`)
+  console.log("user: ", user)
 
-  return { props: { product, image_uri: image_uri.url } }
+  return {
+    props: { product, image_uri: image_uri.url, user: user },
+  }
 }
 
 const ProductDetail = ({
   product,
   image_uri,
+  user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const [userInfo, setUserInfo] = useState<User>()
+  const [id, setId] = useState<string | null>()
+  const { data: session } = useSession()
+  //   return
+  // }
+
+  // getUserInfo()
+
+  //TODO
+  async function handleAddToCart() {
+    if (session) {
+      console.log(
+        "in cart: ",
+        user?.products_in_cart,
+        typeof user?.products_in_cart
+      )
+      console.log("hoho: ", user?.products_in_cart.includes(String(product.id)))
+      if (user?.products_in_cart.includes(String(product.id))) {
+        window.alert("Product has already in cart!")
+        return
+      } else {
+        const updateCart = await axios.patch(`/users/${userInfo?.id}`, {
+          products_in_cart: userInfo?.products_in_cart + "," + `${product.id}`,
+        })
+        console.log("update : ", updateCart)
+      }
+    } else {
+      window.alert("Please login first to add.")
+      signIn()
+    }
+  }
+
   return (
-    <div className={"grid grid-cols-2   p-10 pt-32"}>
+    <div className={"grid grid-cols-2 p-10 pt-32"}>
       <div>
         <Image
           src={image_uri}
@@ -64,7 +110,10 @@ const ProductDetail = ({
             </span>
           </div>
           <div className="flex justify-start">
-            <button className="flex items-center mr-7  bg-red-50 border-2 border-red-500 text-red-500 py-2 px-5 ">
+            <button
+              className="flex items-center mr-7  bg-red-50 border-2 border-red-500 text-red-500 py-2 px-5 "
+              onClick={handleAddToCart}
+            >
               <span>
                 <svg
                   className="w-12 h-12 mr-6"
@@ -82,7 +131,19 @@ const ProductDetail = ({
               <span>Add to cart</span>
             </button>
             <button className="py-2 px-5 bg-red-500 border-2 border-red-500 text-white">
-              Order now!
+              <Link
+                href={{
+                  pathname: `/orders/new`,
+                  query: {
+                    productIds: JSON.stringify(product.id),
+                    user_id: JSON.stringify(user?.id),
+                    totalPrice: JSON.stringify(product.price),
+                    productsInCart: JSON.stringify(userInfo?.products_in_cart),
+                  },
+                }}
+              >
+                Order now!
+              </Link>
             </button>
           </div>
         </div>

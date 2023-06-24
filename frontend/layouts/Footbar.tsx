@@ -3,7 +3,7 @@ import { montserrat, ubuntu } from "@/libs/font"
 
 export const Footbar = () => {
   return (
-    <div className="bg-orange-50 text-gray-400 mt-40">
+    <div className=" bottom-0 text-gray-400 pt-40 w-full">
       <div
         className={
           "grid grid-rows-1 grid-cols-4 relative bottom-5 w-full " +

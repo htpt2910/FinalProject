@@ -1,4 +1,5 @@
 import { dogs } from "@/data/Dogs"
+import { useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 interface ProductCardProps {

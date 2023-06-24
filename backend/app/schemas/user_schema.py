@@ -8,7 +8,7 @@ class UserBase(BaseModel):
     phone: Optional[str] = None
     address: Optional[str] = None
     image_uri: Optional[str] = None
-    cart: Optional[List[int]] = None
+    products_in_cart: Optional[str] = None
 
 
 class UserCreate(UserBase):

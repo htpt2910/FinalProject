@@ -35,7 +35,7 @@ export const Services = () => {
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
             }
             bg_color="bg-orange-400"
-            route="#"
+            route="service"
           />
         </div>
         <div>

@@ -29,6 +29,16 @@ def read_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
     return products
 
 
+# // get all products that has in cart includes userid
+@product_router.get("/cart")
+def get_products_has_in_cart_includes_user_id(
+    user_id: str, db: Session = Depends(get_db)
+):
+    return crud_product.get_products_has_in_cart_includes_user_id(
+        db=db, user_id=user_id
+    )
+
+
 @product_router.post("/", response_model=product_schema.Product)
 def create_product(
     product: product_schema.ProductCreate, db: Session = Depends(get_db)

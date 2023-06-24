@@ -11,7 +11,7 @@ class User(Base):
     name = Column(String)
     phone = Column(String, unique=True)
     address = Column(String)
-    cart = Column(ARRAY(Integer))
+    products_in_cart = Column(String)
     image_uri = Column(String)
     is_active = Column(Boolean, default=True)
 

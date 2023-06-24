@@ -4,6 +4,7 @@ import axios from "@/libs/axios"
 import { comfortaa } from "@/libs/font"
 import { Dog } from "@/libs/types"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
+import { useSession } from "next-auth/react"
 
 export const getServerSideProps: GetServerSideProps<{
   products: Dog[]
@@ -42,7 +43,7 @@ export default function AllPets({
           return (
             <ProductCard
               key={idx}
-              id={idx}
+              id={dog.id}
               product_name={dog.product_name}
               breed={dog.breed?.name}
               desc={dog.desc}

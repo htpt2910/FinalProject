@@ -20,7 +20,7 @@ export type User = {
   phone: string
   address: string
   image_uri: string
-  cart: number[]
+  products_in_cart: string
 }
 
 export type Breed = {

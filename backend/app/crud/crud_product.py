@@ -36,6 +36,9 @@ def get_products(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Product).offset(skip).limit(limit).all()
 
 
+# def get_products_has_in_cart_includes_user_id(db: Session, user_id: str)
+
+
 def create_product(db: Session, product: product_schema.ProductCreate):
     db_product = get_product_by_product_name(db, product_name=product.product_name)
     if db_product:
@@ -63,6 +66,7 @@ def update_product(db: Session, product: product_schema.ProductUpdate, product_i
         raise HTTPException(status_code=404, detail="Product not found")
     product_data = product.dict(exclude_unset=True)
     for key, value in product_data.items():
+        print(key, value)
         setattr(db_product, key, value)
 
     db.add(db_product)
