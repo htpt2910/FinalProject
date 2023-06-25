@@ -39,4 +39,11 @@ export type Order = {
   user_id: number
   user: User
   image_uri: string
+  services: Service[]
+}
+
+export type Service = {
+  id: number
+  service_name: string
+  price: number
 }

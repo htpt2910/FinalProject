@@ -29,6 +29,11 @@ def get_order(order_id: int, db: Session = Depends(get_db)):
     return crud_order.get_order(db, order_id=order_id)
 
 
+@order_router.get("/{order_id}/service")
+def get_service_order(order_id: int, db: Session = Depends(get_db)):
+    return crud_order.get_service_order(order_id=order_id, db=db)
+
+
 @order_router.get("/{user_id}/all")
 def get_order_by_user_id(user_id: str, db: Session = Depends(get_db)):
     return crud_order.get_orders_by_user_id(db, user_id=user_id)
