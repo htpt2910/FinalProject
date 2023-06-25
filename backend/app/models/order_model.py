@@ -13,6 +13,10 @@ class Order(Base):
     total_price = Column(Integer)
     is_active = Column(Boolean, default=True)
     user_id = Column(Integer, ForeignKey("users.id"))
+    destination = Column(String)
 
     user = relationship("User", back_populates="orders")
     products = relationship("Product", back_populates="order")
+    services = relationship(
+        "Service", secondary="orders_services", back_populates="orders"
+    )

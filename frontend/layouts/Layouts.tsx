@@ -29,7 +29,7 @@ export const Layouts = ({ pageProps, Component }: LayoutsProps) => {
         <div className="bg-orange-50 px-32 w-screen h-full">
           <Navbar />
           <Component {...pageProps} />
-          <Footbar />
+          {/* <Footbar /> */}
         </div>
       )}
     </>

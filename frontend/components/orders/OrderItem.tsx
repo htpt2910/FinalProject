@@ -1,4 +1,4 @@
-import { Order } from "@/libs/types"
+import { Order, Service } from "@/libs/types"
 import Image from "next/image"
 import img from "../../assets/dog_food.webp"
 import { ubuntu } from "@/libs/font"
@@ -47,6 +47,11 @@ export const OrderItem = ({ order }: OrderItemProps) => {
 
   // console.log("day in full: ", dayInFull)
 
+  function convert(name: string) {
+    var name = name.replace(/_/g, " ")
+    return name
+  }
+
   return (
     <div className="bg-slate-50 m-5 rounded-lg p-3 text-center">
       <div className="flex ">
@@ -73,79 +78,100 @@ export const OrderItem = ({ order }: OrderItemProps) => {
         <p className={"text-gray-500 mb-2 text-start " + ubuntu.className}>
           Type: {order.type}
         </p>
-        <div className="">
-          {showAll ? (
-            <>
-              {order.products?.map((product: Dog, index: number) => {
-                return (
-                  <table className="my-3 w-full table-fixed" key={index}>
-                    <tbody>
-                      <tr>
-                        <th className="w-">
-                          <Image
-                            src={product.image_uri}
-                            alt="alt"
-                            width={100}
-                            height={100}
-                          />
-                        </th>
-                        <th className="text-left">{product.product_name}</th>
-                        <th className="w-fit text-right">{product.price}</th>
-                      </tr>
-                    </tbody>
-                  </table>
-                )
-              })}
-              <button
-                className={
-                  "opacity-50 border-2 border-gray-200 w-full border-double " +
-                  ubuntu.className
-                }
-                onClick={() => setShowAll(false)}
-              >
-                Hide products
-              </button>
-            </>
-          ) : (
-            <>
-              <table className="my-3 w-full table-fixed">
-                <tbody>
-                  <tr>
-                    <th>
-                      <Image
-                        src={order.products[0]?.image_uri}
-                        alt="alt"
-                        width={100}
-                        height={100}
-                      />
-                    </th>
-                    <th className="text-left">
-                      {order.products[0]?.product_name}
-                    </th>
-                    <th className="w-fit text-right">
-                      {order.products[0]?.price}
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-              {order.products.length > 1 ? (
+        {order.type === "shopping" ? (
+          <div className="">
+            {showAll ? (
+              <>
+                {order.products?.map((product: Dog, index: number) => {
+                  return (
+                    <table className="my-3 w-full table-fixed" key={index}>
+                      <tbody>
+                        <tr>
+                          <th className="w-">
+                            <Image
+                              src={product.image_uri}
+                              alt="alt"
+                              width={100}
+                              height={100}
+                            />
+                          </th>
+                          <th className="text-left">{product.product_name}</th>
+                          <th className="w-fit text-right">{product.price}</th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  )
+                })}
                 <button
                   className={
                     "opacity-50 border-2 border-gray-200 w-full border-double " +
                     ubuntu.className
                   }
-                  onClick={() => setShowAll(true)}
+                  onClick={() => setShowAll(false)}
                 >
-                  Show all products
+                  Hide products
                 </button>
-              ) : (
-                <></>
-              )}
-            </>
-          )}
-        </div>
+              </>
+            ) : (
+              <>
+                <table className="my-3 w-full table-fixed">
+                  <tbody>
+                    <tr>
+                      <th>
+                        <Image
+                          src={order.products[0]?.image_uri}
+                          alt="alt"
+                          width={100}
+                          height={100}
+                        />
+                      </th>
+                      <th className="text-left">
+                        {order.products[0]?.product_name}
+                      </th>
+                      <th className="w-fit text-right">
+                        {order.products[0]?.price}
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+                {order.products.length > 1 ? (
+                  <button
+                    className={
+                      "opacity-50 border-2 border-gray-200 w-full border-double " +
+                      ubuntu.className
+                    }
+                    onClick={() => setShowAll(true)}
+                  >
+                    Show all products
+                  </button>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
+          </div>
+        ) : (
+          <table className="w-full">
+            <tbody>
+              {order?.services?.map((service: any, index: number) => {
+                return (
+                  <tr key={index}>
+                    <th className="text-left">
+                      <p className="capitalize">
+                        {convert(service?.service_name)}
+                      </p>
+                    </th>
+                    <th className="text-end">
+                      <p className="capitalize">{service?.price}$</p>
+                    </th>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        )}
         <p className="text-end text-red-400 text-2xl">
-          {order.total_price ? order.total_price : "1000$"}
+          {order.total_price ? order.total_price : "1000"}$
         </p>
       </div>
     </div>

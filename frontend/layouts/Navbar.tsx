@@ -16,6 +16,7 @@ export const Navbar = () => {
   useEffect(() => {
     async function getUserInfo() {
       const userInfo = await axios.get(`/users/${session?.user?.email}/info`)
+      setUserId(userInfo?.data.id)
       const { data: image_uri } = await axios.get(
         `/users/${userInfo?.data.id}/avatar`
       )
@@ -26,7 +27,7 @@ export const Navbar = () => {
         setProdsInCart(userInfo?.data.products_in_cart.split(",").length)
       } else setProdsInCart(0)
     }
-
+    //TODO  chay qua nhieu lan
     if (session) getUserInfo()
   }, [prodsInCart, session])
 

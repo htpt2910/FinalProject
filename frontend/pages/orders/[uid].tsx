@@ -1,7 +1,7 @@
 import { OrderItem } from "@/components/orders/OrderItem"
 import axios from "@/libs/axios"
 import { montserrat, ubuntu } from "@/libs/font"
-import { Dog, Order, User } from "@/libs/types"
+import { Dog, Order, Service, User } from "@/libs/types"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 
 //list orders of user
@@ -14,18 +14,38 @@ export const getServerSideProps: GetServerSideProps<{
   console.log("uid: ", uid)
   const { data: orders } = await axios.get(`/orders/${uid}/all`)
   // const { data: image_uri } = await axios.get(`/users/${uid}/avatar`)
+
   const updatedOrders = await Promise.all<Order[]>(
     orders.map(async (order: Order, index: number) => {
       console.log("order: ", order)
-      const products = await Promise.all<any>(
-        order.products.map(async (product: Dog, index: number) => {
-          const { data } = await axios.get(`/products/${product.id}/image`)
-          const image_uri = data.url
-          return { ...product, image_uri }
+      if (order.type === "shopping" || order.type === null) {
+        const products = await Promise.all<any>(
+          order.products.map(async (product: Dog, index: number) => {
+            const { data } = await axios.get(`/products/${product.id}/image`)
+            const image_uri = data.url
+            return { ...product, image_uri }
+          })
+        )
+        console.log("{...order, products}: ", { ...order, products })
+        return { ...order, products }
+      } else {
+        var serviceNames: Service[] = []
+        const services = await axios.get(`/orders/${order.id}/service`)
+        // console.log("service: ", service.data) // tra ve array id (string)
+        console.log("123: ", services.data)
+        const service_ids: string[] = services.data
+
+        service_ids.map(async (id: string) => {
+          const { data: service_names } = await axios.get(`/services/${id}`)
+          console.log("service_name:  ", service_names)
+          serviceNames.push(service_names)
         })
-      )
-      return { ...order, products }
-      // product.image_uri = image_uri
+        console.log("{ ...order, services: serviceNames }: ", {
+          ...order,
+          services: serviceNames,
+        })
+        return { ...order, services: serviceNames }
+      }
     })
   )
 
@@ -110,6 +130,7 @@ export default function ListOrders({
       </div>
 
       <div className="mt-10">
+        {/* {JSON.stringify(orders)} */}
         {orders?.reverse().map((order, index) => {
           return <OrderItem key={index} order={order} />
         })}

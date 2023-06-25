@@ -66,6 +66,7 @@ export const OrderForm = ({
         ordered_day: Date.now(),
         total_price: Number(totalPrice),
         product_ids: selectedProductIdsInInteger,
+        type: "shopping",
       })
       .then(async (response) => {
         //update fields user cart

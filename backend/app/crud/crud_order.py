@@ -1,10 +1,13 @@
 import datetime
 from sqlalchemy.orm import Session, joinedload
+from app.crud.crud_service import get_service
+from app.models.service_model import Service
 from fastapi import HTTPException
 from app.models.order_model import Order
 from app.models.product_model import Product
 from app.schemas import order_schema
 from app.crud.crud_product import get_products_by_order_id, get_product
+from app.models.service_model import orders_services
 
 
 def get_order(db: Session, order_id: int):
@@ -34,6 +37,17 @@ def get_orders_by_user_id(db: Session, user_id: int):
     )
 
 
+def get_service_order(order_id: int, db: Session):
+    db_orders_services = db.query(orders_services)
+    services_in_order = []
+    for order_service in db_orders_services:
+        if order_service.order_id == order_id:
+            service_id_in_str = str(order_service.service_id)
+            services_in_order.extend(service_id_in_str)
+
+    return services_in_order
+
+
 # skip and limit for paging
 def get_orders(db: Session, skip: int = 0, limit: int = 100):
     return (
@@ -50,20 +64,30 @@ def create_order(db: Session, order: order_schema.OrderCreate):
     if db_order:
         raise HTTPException(status_code=400, detail="Name already existed!")
 
-    products = []
-    for product_id in order.product_ids:
-        product = get_product(db, product_id)
-        products.append(product)
-
     db_order = Order(
         user_id=order.user_id,
         type=order.type,
+        destination=order.destination,
         ordered_day=order.ordered_day,
         finished_day=order.finished_day,
         total_price=order.total_price,
     )
 
-    db_order.products.extend(products)
+    if order.service_ids is not None:
+        services = []
+        for service_id in order.service_ids:
+            service = get_service(db, service_id)
+            services.append(service)
+
+        db_order.services.extend(services)
+
+    if order.product_ids is not None:
+        products = []
+        for product_id in order.product_ids:
+            product = get_product(db, product_id)
+            products.append(product)
+
+        db_order.products.extend(products)
 
     db.add(db_order)
     db.commit()

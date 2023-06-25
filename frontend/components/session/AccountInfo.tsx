@@ -13,6 +13,7 @@ interface AccountInfoProps {
 export const AccountInfo = ({ user, id, avatar }: AccountInfoProps) => {
   const { data: session } = useSession()
   const [open, setOpen] = useState(false)
+  console.log("id: ", id)
 
   function handleOpenMenu() {
     setOpen(!open)
