@@ -2,6 +2,7 @@ import axios from "@/libs/axios"
 import { ubuntu } from "@/libs/font"
 import { Dog, User } from "@/libs/types"
 import Image from "next/image"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
 
@@ -94,6 +95,16 @@ export const OrderForm = ({
         router.push("/")
       })
   }
+
+  async function createPayment() {
+    const value = {
+      total_price: parseInt(totalPrice),
+      user_id: user_id,
+    }
+    const response = await axios.post(`/payment/create_payment`, null, {
+      params: value,
+    })
+  }
   return (
     <div className="mt-32">
       <div>
@@ -166,6 +177,7 @@ export const OrderForm = ({
         >
           Confirm
         </button>
+        <button onClick={createPayment}>Thanh toan ngay</button>
       </div>
     </div>
   )

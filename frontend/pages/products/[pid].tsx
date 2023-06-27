@@ -51,6 +51,7 @@ const ProductDetail = ({
   const [productInfo, setProductInfo] = useState<UpdateDogSchema>(product)
 
   async function handleAddToCart() {
+    console.log("click add to card")
     if (session) {
       if (user?.products_in_cart.includes(String(product.id))) {
         window.alert("Product has already in cart!")
@@ -59,6 +60,7 @@ const ProductDetail = ({
         const updateCart = await axios.patch(`/users/${userInfo?.id}`, {
           products_in_cart: userInfo?.products_in_cart + "," + `${product.id}`,
         })
+        window.alert("Add to card successfully")
       }
     } else {
       window.alert("Please login first to add.")
