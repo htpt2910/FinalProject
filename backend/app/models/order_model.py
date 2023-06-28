@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.db.base_class import Base
+from app.models.payment_model import Payment
 
 
 class Order(Base):
@@ -14,9 +15,11 @@ class Order(Base):
     is_active = Column(Boolean, default=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     destination = Column(String)
+    status = Column(Integer)
 
     user = relationship("User", back_populates="orders")
     products = relationship("Product", back_populates="order")
     services = relationship(
         "Service", secondary="orders_services", back_populates="orders"
     )
+    payment = relationship("Payment", back_populates="order")

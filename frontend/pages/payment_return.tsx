@@ -1,18 +1,21 @@
 import axios from "@/libs/axios"
+import { Payment } from "@/libs/types"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
 export default function PaymentReturnPage() {
-  // useEffect(() => {
-  //   async function getParams() {
-  //     const params = await axios.get("/payment/payment_returnnn", {params: {request: }})
-  //     console.log("params: ", params, params.data)
-  //   }
-
-  //   getParams()
-  // }, [])
   const router = useRouter()
   const paymentInfo = router.query
+  // const body: Payment = {
+  //   code: paymentInfo?.vnp_TransactionNo,
+  //   money: paymentInfo.vnp_Amount / 10000,
+  //   status: paymentInfo.vnp_ResponseCode == "00" ? "Success" : "Fail",
+  //   bank_code: paymentInfo.vnp_BankCode,
+  //   payment_date: paymentInfo.vnp_PayDate,
+  // }
+  // const response = axios.post("/payments/", body)
+  // console.log("response in payment_return: ", response)
+
   return (
     <div className="mt-64">
       <p>Kết quả thanh toán</p>

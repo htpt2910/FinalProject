@@ -97,11 +97,12 @@ export const OrderForm = ({
   }
 
   async function createPayment() {
+    console.log("click")
     const value = {
       total_price: parseInt(totalPrice),
       user_id: user_id,
     }
-    const response = await axios.post(`/payment/create_payment`, null, {
+    const response = await axios.post("/payment/create_payment", null, {
       params: value,
     })
   }
@@ -177,7 +178,12 @@ export const OrderForm = ({
         >
           Confirm
         </button>
-        <button onClick={createPayment}>Thanh toan ngay</button>
+        <button
+          className="text-white bg-red-500 px-5 py-2"
+          onClick={createPayment}
+        >
+          Thanh toan ngay
+        </button>
       </div>
     </div>
   )

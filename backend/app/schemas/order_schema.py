@@ -12,6 +12,7 @@ class OrderBase(BaseModel):
     finished_day: Optional[datetime] = None
     total_price: Optional[int]
     destination: Optional[str]
+    status: Optional[int]
 
 
 class OrderCreate(OrderBase):

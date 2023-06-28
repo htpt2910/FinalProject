@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Any, List, Union
+from app.schemas import payment_schema
 
 from fastapi import Depends, FastAPI, HTTPException, APIRouter
 from sqlalchemy.orm import Session
@@ -11,7 +12,7 @@ from app.ai.breed_classify import class_names
 from app.core.config import settings
 from app.core.vnpay import vnpay
 from random import randint
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 
 import hashlib
 
@@ -60,4 +61,40 @@ def create_payment(total_price: int, user_id: int):
     )
     print("vnpay_payment_url: ", vnpay_payment_url)
 
-    return vnpay_payment_url
+    return RedirectResponse(vnpay_payment_url)
+
+
+@payment_router.get("/", response_model=List[payment_schema.Payment])
+def read_payments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud_payment.get_payments(db, skip=skip, limit=limit)
+
+
+@payment_router.get("/{payment_id}")
+def get_payment(payment_id: int, db: Session = Depends(get_db)):
+    return crud_payment.get_payment_by_payment_id(db=db, payment_id=payment_id)
+
+
+@payment_router.get("/by_order/{order_id}")
+def get_payment(order_id: int, db: Session = Depends(get_db)):
+    return crud_payment.get_payment_by_order_id(db=db, order_id=order_id)
+
+
+@payment_router.post("/save_payment", response_model=payment_schema.Payment)
+def save_payment_to_db(
+    payment: payment_schema.PaymentCreate, db: Session = Depends(get_db)
+):
+    return crud_payment.create_payment(db=db, payment=payment)
+
+
+@payment_router.patch("/{payment_id}", response_model=payment_schema.Payment)
+def update_payment(
+    payment_id: int,
+    payment: payment_schema.PaymentUpdate,
+    db: Session = Depends(get_db),
+):
+    return crud_payment.update_user(db=db, payment=payment, payment_id=payment_id)
+
+
+@payment_router.delete("/{payment_id}")
+def delete_payment(payment_id: int, db: Session = Depends(get_db)):
+    return crud_payment.delete_payment(payment_id=payment_id, db=db)
