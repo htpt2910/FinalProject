@@ -17,9 +17,23 @@ export const getServerSideProps: GetServerSideProps<{
   const userInfo = await axios.get(`/users/${uid}`)
   console.log("cart: ", userInfo?.data.products_in_cart)
   const productIdsInCartString = userInfo?.data.products_in_cart
-  const productIdsInCart = productIdsInCartString.split(",")
+    ? userInfo?.data.products_in_cart
+    : null
+  const productIdsInCart =
+    productIdsInCartString !== null && productIdsInCartString.includes(",")
+      ? productIdsInCartString.split(",")
+      : productIdsInCartString
 
   console.log("productsInCart ", productIdsInCart)
+  if (productIdsInCart === null) {
+    return {
+      props: {
+        listProductsInCart: [],
+        user_id: userInfo?.data.id,
+        productIdsInCartString: null,
+      },
+    }
+  }
   const listProductsInCart: Dog[] = await Promise.all(
     productIdsInCart.map(async (id: string) => {
       const product = await axios.get(`/products/${id}`)
@@ -84,93 +98,98 @@ export default function CartPage({
   return (
     <div className="mt-32 mx-96 bg-white">
       <p>this is cart page</p>
-      <div>
-        <div className="bg-slate-50 m-5 rounded-lg p-3 text-center">
-          {productsInCart
-            ?.reverse()
-            .map((product: Dog, productIndex: number) => {
-              return (
-                <table
-                  className={
-                    "my-3 w-full table-fixed " +
-                    (product.order_id !== null ? " opacity-50 " : "")
-                  }
-                  key={productIndex}
-                >
-                  <tbody>
-                    <tr>
-                      <th>
-                        {product.order_id ? (
-                          <input
-                            name={`${product.id}`}
-                            disabled
-                            type="checkbox"
-                            id={`${productIndex}`}
-                            onChange={(event) =>
-                              handleselectedProductIds(
-                                productIndex,
-                                product,
-                                event
-                              )
-                            }
+
+      {listProductsInCart.length > 0 ? (
+        <div>
+          <div className="bg-slate-50 m-5 rounded-lg p-3 text-center">
+            {productsInCart
+              ?.reverse()
+              .map((product: Dog, productIndex: number) => {
+                return (
+                  <table
+                    className={
+                      "my-3 w-full table-fixed " +
+                      (product.order_id !== null ? " opacity-50 " : "")
+                    }
+                    key={productIndex}
+                  >
+                    <tbody>
+                      <tr>
+                        <th>
+                          {product.order_id ? (
+                            <input
+                              name={`${product.id}`}
+                              disabled
+                              type="checkbox"
+                              id={`${productIndex}`}
+                              onChange={(event) =>
+                                handleselectedProductIds(
+                                  productIndex,
+                                  product,
+                                  event
+                                )
+                              }
+                            />
+                          ) : (
+                            <input
+                              name={`${product.id}`}
+                              type="checkbox"
+                              id={`${productIndex}`}
+                              onChange={(event) =>
+                                handleselectedProductIds(
+                                  productIndex,
+                                  product,
+                                  event
+                                )
+                              }
+                            />
+                          )}
+                        </th>
+                        <th className="w-">
+                          <Image
+                            src={product.image_uri}
+                            alt="alt"
+                            width={100}
+                            height={100}
                           />
-                        ) : (
-                          <input
-                            name={`${product.id}`}
-                            type="checkbox"
-                            id={`${productIndex}`}
-                            onChange={(event) =>
-                              handleselectedProductIds(
-                                productIndex,
-                                product,
-                                event
-                              )
-                            }
-                          />
-                        )}
-                      </th>
-                      <th className="w-">
-                        <Image
-                          src={product.image_uri}
-                          alt="alt"
-                          width={100}
-                          height={100}
-                        />
-                      </th>
-                      <th className="text-left">{product.product_name}</th>
-                      <th className="w-fit text-right">
-                        {product.order_id ? "Out of stock" : product.price}
-                      </th>
-                    </tr>
-                  </tbody>
-                </table>
-              )
-            })}
+                        </th>
+                        <th className="text-left">{product.product_name}</th>
+                        <th className="w-fit text-right">
+                          {product.order_id ? "Out of stock" : product.price}
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
+                )
+              })}
+          </div>
+          <div className="text-end">
+            <p className="text-xl">
+              Total:{" "}
+              <span className="text-red-500">
+                {totalPrice(selectedProducts)} $
+              </span>
+            </p>
+            <button className="bg-red-400 text-white border-2 rounded-md px-3 py-2">
+              <Link
+                href={{
+                  pathname: `/orders/new`,
+                  query: {
+                    productIds: selectedProductIds.join(","),
+                    user_id: JSON.stringify(userId),
+                    totalPrice: JSON.stringify(totalPrice(selectedProducts)),
+                    productsInCart: productIdsInCartString,
+                  },
+                }}
+              >
+                Book
+              </Link>
+            </button>
+          </div>
         </div>
-        <div className="text-end">
-          <p className="text-xl">
-            Total:{" "}
-            <span className="text-red-500">
-              {totalPrice(selectedProducts)} $
-            </span>
-          </p>
-          <button className="bg-red-400 text-white border-2 rounded-md px-3 py-2">
-            <Link
-              href={{
-                pathname: `/orders/new`,
-                query: {
-                  productIds: selectedProductIds.join(","),
-                  user_id: JSON.stringify(userId),
-                  totalPrice: JSON.stringify(totalPrice(selectedProducts)),
-                  productsInCart: productIdsInCartString,
-                },
-              }}
-            >
-              Book
-            </Link>
-          </button>
-        </div>
-      </div>
+      ) : (
+        <p className="text-red-500">No product in cart</p>
+      )}
     </div>
   )
 }

@@ -3,17 +3,6 @@ from app.models.payment_model import Payment
 from app.models.order_model import Order
 from app.schemas import payment_schema
 from fastapi import HTTPException
-from app.core.config import settings
-from datetime import datetime
-
-
-# get all payments
-
-
-# get 1 payment by order_id
-# create_payment
-# update_payment (maybe not use)
-# delete_payment (when delete order)
 
 
 def get_payment_by_order_id(db: Session, order_id: int):
@@ -25,8 +14,8 @@ def get_payment_by_order_id(db: Session, order_id: int):
     )
 
 
-def get_payment_by_payment_id(db: Session, payment_id: int):
-    return db.query(Payment).filter(payment_id == Payment.id).first()
+def get_payment_by_payment_code(db: Session, payment_code: str):
+    return db.query(Payment).filter(payment_code == Payment.code).first()
 
 
 # skip and limit for paging
@@ -35,26 +24,25 @@ def get_payments(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_payment(db: Session, payment: payment_schema.PaymentCreate):
-    db_payment = get_payment_by_payment_id(db, payment_name=payment.id)
+    db_payment = get_payment_by_payment_code(db, payment_code=payment.code)
     if db_payment:
-        raise HTTPException(status_code=400, detail="Payment already completed")
+        return {" payment already proceed! "}
 
     db_payment = Payment(
         code=payment.code,
         money=payment.money,
         status=payment.status,
+        payment_content=payment.payment_content,
         bank_code=payment.bank_code,
         payment_date=payment.payment_date,
         order_id=payment.order_id,
     )
+    print("gogoL ", db_payment)
 
     db.add(db_payment)
     db.commit()
     db.refresh(db_payment)
     return db_payment
-
-
-# may be not use
 
 
 def update_payment(db: Session, payment: payment_schema.PaymentUpdate, payment_id: int):

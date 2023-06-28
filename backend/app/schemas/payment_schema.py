@@ -23,7 +23,6 @@ class PaymentUpdate(PaymentBase):
 
 class Payment(PaymentBase):
     id: int
-    is_active: bool
 
     class Config:
         orm_mode = True

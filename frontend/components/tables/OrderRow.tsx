@@ -1,5 +1,5 @@
 import axios from "@/libs/axios"
-import convertDaySetting from "@/libs/convertDay"
+import { convertDaySetting } from "@/libs/convertDay"
 import { montserrat } from "@/libs/font"
 import { Order } from "@/libs/types"
 import Image from "next/image"

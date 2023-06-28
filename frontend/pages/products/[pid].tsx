@@ -1,15 +1,14 @@
-import { comfortaa, montserrat, ubuntu } from "@/libs/font"
+import { ProductItem } from "@/components/products/ProductItem"
+import axios from "@/libs/axios"
+import { montserrat } from "@/libs/font"
 import { Dog, User } from "@/libs/types"
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next"
+import { getServerSession } from "next-auth/next"
 import { signIn, useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { getServerSession } from "next-auth/next"
+import { useState } from "react"
 import { options } from "../api/auth/[...nextauth]"
-import { ProductItem } from "@/components/products/ProductItem"
-import axios from "@/libs/axios"
 
 type UpdateDogSchema = Partial<
   Omit<Dog, "breed"> & {
@@ -51,7 +50,6 @@ const ProductDetail = ({
   const [productInfo, setProductInfo] = useState<UpdateDogSchema>(product)
 
   async function handleAddToCart() {
-    console.log("click add to card")
     if (session) {
       if (user?.products_in_cart.includes(String(product.id))) {
         window.alert("Product has already in cart!")

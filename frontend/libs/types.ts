@@ -49,11 +49,11 @@ export type Service = {
 }
 
 export type Payment = {
-  id: number
   code: string | undefined
   money: string
   status: string
   bank_code: string
+  payment_content: string
   payment_date: Date
   order_id: number
 }

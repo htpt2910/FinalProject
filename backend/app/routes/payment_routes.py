@@ -61,7 +61,7 @@ def create_payment(total_price: int, user_id: int):
     )
     print("vnpay_payment_url: ", vnpay_payment_url)
 
-    return RedirectResponse(vnpay_payment_url)
+    return vnpay_payment_url
 
 
 @payment_router.get("/", response_model=List[payment_schema.Payment])
@@ -79,7 +79,7 @@ def get_payment(order_id: int, db: Session = Depends(get_db)):
     return crud_payment.get_payment_by_order_id(db=db, order_id=order_id)
 
 
-@payment_router.post("/save_payment", response_model=payment_schema.Payment)
+@payment_router.post("/save_payment")
 def save_payment_to_db(
     payment: payment_schema.PaymentCreate, db: Session = Depends(get_db)
 ):
@@ -92,7 +92,7 @@ def update_payment(
     payment: payment_schema.PaymentUpdate,
     db: Session = Depends(get_db),
 ):
-    return crud_payment.update_user(db=db, payment=payment, payment_id=payment_id)
+    return crud_payment.update_payment(db=db, payment=payment, payment_id=payment_id)
 
 
 @payment_router.delete("/{payment_id}")
