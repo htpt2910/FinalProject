@@ -5,7 +5,7 @@ import { ubuntu } from "@/libs/font"
 import { useEffect, useState } from "react"
 import { useSelect } from "@mui/base"
 import { Dog } from "@/libs/types"
-import convertDaySetting from "@/libs/convertDay"
+import { convertDaySetting } from "@/libs/convertDay"
 interface OrderItemProps {
   order: Order
 }

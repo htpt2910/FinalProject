@@ -1,6 +1,7 @@
 from typing import List, Optional
 from app.schemas.product_schema import Product
 from app.schemas.service_schema import Service
+from app.schemas.payment_schema import Payment
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -12,6 +13,7 @@ class OrderBase(BaseModel):
     finished_day: Optional[datetime] = None
     total_price: Optional[int]
     destination: Optional[str]
+    status: Optional[int]
 
 
 class OrderCreate(OrderBase):

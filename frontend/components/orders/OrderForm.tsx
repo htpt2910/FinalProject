@@ -23,7 +23,6 @@ export const OrderForm = ({
   products,
 }: OrderFormProps) => {
   const router = useRouter()
-  console.log(userInfo)
 
   function updateCart(
     selectedProductIds: number[],
@@ -59,40 +58,47 @@ export const OrderForm = ({
       window.alert("Please fill in your information.")
       return
     }
-
-    const response = await axios
-      .post(`/orders/`, {
-        user_id: Number(user_id),
-        ordered_day: Date.now(),
-        total_price: Number(totalPrice),
-        product_ids: selectedProductIdsInInteger,
-        type: "shopping",
+    if (userInfo?.phone === null || userInfo?.address === null) {
+      const updateUserInfo = await axios.patch(`/users/${user_id}`, {
+        phone: info.phone,
+        address: info.address,
       })
-      .then(async (response) => {
-        //update fields user cart
-        const res = await axios.patch(`/users/${user_id}`, {
-          products_in_cart: updateCart(
-            selectedProductIdsInInteger,
-            productIdsInIntegerInCart
-          ),
-        })
+    }
 
-        console.log("resss123: ", res.data)
+    const response = await axios.post(`/orders/`, {
+      user_id: Number(user_id),
+      ordered_day: Date.now(),
+      total_price: Number(totalPrice),
+      product_ids: selectedProductIdsInInteger,
+      type: "shopping",
+    })
 
-        if (userInfo?.phone === null || userInfo?.address === null) {
-          const updateUserInfo = await axios.patch(`/users/${user_id}`, {
-            phone: info.phone,
-            address: info.address,
-          })
+    const res = await axios.patch(`/users/${user_id}`, {
+      products_in_cart: updateCart(
+        selectedProductIdsInInteger,
+        productIdsInIntegerInCart
+      ),
+    })
 
-          console.log("ress: ", updateUserInfo)
-        }
-      })
-      .catch((e) => console.log(e))
-      .finally(() => {
-        window.alert("Create order successfully! Get back to homepage.")
-        router.push("/")
-      })
+    return response.data.id
+  }
+
+  async function createPayment() {
+    const oid = await handleCreateNewOrder()
+    console.log("order id: ", oid)
+    if (typeof window !== undefined) {
+      window.localStorage.setItem("new_order_id", oid)
+    }
+
+    const value = {
+      total_price: parseInt(totalPrice),
+      user_id: user_id,
+    }
+    const response = await axios.post("/payment/create_payment", null, {
+      params: value,
+    })
+
+    router.push(response.data)
   }
   return (
     <div className="mt-32">
@@ -165,6 +171,12 @@ export const OrderForm = ({
           onClick={handleCreateNewOrder}
         >
           Confirm
+        </button>
+        <button
+          className="text-white bg-red-500 px-5 py-2"
+          onClick={createPayment}
+        >
+          Thanh toan ngay
         </button>
       </div>
     </div>

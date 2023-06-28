@@ -8,7 +8,10 @@ import os
 
 app = FastAPI()
 
-origins = ["http://localhost:3000", os.getenv("FRONTEND_HOST")]
+origins = [
+    "http://localhost:3000",
+    os.getenv("FRONTEND_HOST"),
+]
 
 app.add_middleware(
     CORSMiddleware,

@@ -47,3 +47,13 @@ export type Service = {
   service_name: string
   price: number
 }
+
+export type Payment = {
+  code: string | undefined
+  money: string
+  status: string
+  bank_code: string
+  payment_content: string
+  payment_date: Date
+  order_id: number
+}

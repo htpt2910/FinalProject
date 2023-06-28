@@ -1,7 +1,7 @@
 import { OrderItem } from "@/components/orders/OrderItem"
 import axios from "@/libs/axios"
 import { montserrat, ubuntu } from "@/libs/font"
-import { Dog, Order, Service, User } from "@/libs/types"
+import { Dog, Order, Service } from "@/libs/types"
 import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 
 //list orders of user
@@ -9,15 +9,13 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 export const getServerSideProps: GetServerSideProps<{
   orders: Order[]
 }> = async (context) => {
-  const uid = context.params?.uid
+  const uid = context.query?.uid
 
-  console.log("uid: ", uid)
   const { data: orders } = await axios.get(`/orders/${uid}/all`)
-  // const { data: image_uri } = await axios.get(`/users/${uid}/avatar`)
+  const { data: image_uri } = await axios.get(`/users/${uid}/avatar`)
 
   const updatedOrders = await Promise.all<Order[]>(
     orders.map(async (order: Order, index: number) => {
-      console.log("order: ", order)
       if (order.type === "shopping" || order.type === null) {
         const products = await Promise.all<any>(
           order.products.map(async (product: Dog, index: number) => {
@@ -26,13 +24,10 @@ export const getServerSideProps: GetServerSideProps<{
             return { ...product, image_uri }
           })
         )
-        console.log("{...order, products}: ", { ...order, products })
         return { ...order, products }
       } else {
         var serviceNames: Service[] = []
         const services = await axios.get(`/orders/${order.id}/service`)
-        // console.log("service: ", service.data) // tra ve array id (string)
-        console.log("123: ", services.data)
         const service_ids: string[] = services.data
 
         service_ids.map(async (id: string) => {
@@ -40,16 +35,12 @@ export const getServerSideProps: GetServerSideProps<{
           console.log("service_name:  ", service_names)
           serviceNames.push(service_names)
         })
-        console.log("{ ...order, services: serviceNames }: ", {
-          ...order,
-          services: serviceNames,
-        })
+
         return { ...order, services: serviceNames }
       }
     })
   )
 
-  console.log("orders: ", updatedOrders)
   return { props: { orders: updatedOrders } }
 }
 

@@ -21,5 +21,19 @@ class Settings:
     MINIO_SECRET_KEY = os.getenv("S3_SECRET_KEY")
     MINIO_BUCKET = os.getenv("S3_BUCKET")
 
+    # vppay payment
+
+    VNPAY_RETURN_URL = os.getenv("VNPAY_RETURN_URL", "")
+    VNPAY_PAYMENT_URL = os.getenv("VNPAY_PAYMENT_URL", "")
+    VNPAY_API_URL = os.getenv("VNPAY_API_URL", "")
+    VNPAY_TMN_CODE = os.getenv("VNPAY_TMN_CODE", "")
+    VNPAY_HASH_SECRET_KEY = os.getenv("VNPAY_HASH_SECRET_KEY", "")
+    VNPAY_VERSION = os.getenv("VNPAY_VERSION", "2.1.0")
+    VNAPAY_COMMAND = os.getenv("VNAPAY_COMMAND", "")
+    VNPAY_CURRCODE = os.getenv("VNPAY_CURRCODE", "VND")
+    IP_ADDRESS = os.getenv("IP_ADDRESS", "127.0.0.1")
+    VNPAY_LOCALE = os.getenv("VNPAY_LOCALE", "vn")
+    VNPAY_BANKCODE = os.getenv("VNPAY_BANKCODE", "NCB")
+
 
 settings = Settings()
